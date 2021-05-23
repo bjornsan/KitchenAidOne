@@ -4,15 +4,86 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="using:KitchenAid.Model.Inventory"
     Style="{StaticResource PageStyle}"
     mc:Ignorable="d">
+    
     <Grid x:Name="ContentArea" Margin="{StaticResource MediumLeftRightMargin}">
-        <Grid
-            Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}">
-            <!--
-                The SystemControlPageBackgroundChromeLowBrush background represents where you should place your content. 
-                Place your content here.
-            -->
+        <Grid>
+            <RelativePanel>
+                <ListView x:Name="lvAddProduct" RelativePanel.AlignLeftWithPanel="true">
+                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <Button x:Name="addProductBtn" Content="Add Product" Click="AddProductBtn_Click" />
+                        <Button x:Name="addToInventoryBtn" Content="Add To Inventory" Click="AddToInventoryBtn_Click" />
+                        <Button x:Name="updateProduct" Content="Update product" Click="UpdateProduct_Click"  />
+                    </StackPanel>
+                </ListView>
+
+                <ListView x:Name="lvStorages" ItemsSource="{x:Bind ShoppingListViewModel.ShoppingLists}" RelativePanel.Below="lvAddProduct" Margin="0, 20, 0, 0" SelectedItem="{x:Bind ShoppingListViewModel.SelectedShoppingList, Mode=TwoWay}" Visibility="Collapsed">
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="model:Storage">
+                            <StackPanel>
+                                <TextBlock Text="{x:Bind KindOfStorage}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+
+                <ListView x:Name="lvProducts" ItemsSource="{x:Bind ShoppingListViewModel.Products}" RelativePanel.AlignLeftWith="lvStorages" Margin="200, 20, 0, 0" SelectedItem="{x:Bind ShoppingListViewModel.SelectedProduct, Mode=TwoWay}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="model:Product">
+                            <StackPanel Orientation="Horizontal" Width="1000">
+                                <TextBlock Text="{x:Bind Name, Mode=TwoWay}" Width="200"/>
+                                <Rectangle VerticalAlignment="Stretch" Width="1" Margin="20, 0, 20, 0" Stroke="Black" />
+                                <TextBlock Text="{x:Bind Quantity}" Width="50"/>
+                                <Rectangle VerticalAlignment="Stretch" Width="1" Margin="20, 0, 20, 0" Stroke="Black" />
+                                <TextBlock Text="{x:Bind QuantityUnit}" Width="50"/>
+                                <Rectangle VerticalAlignment="Stretch" Width="1" Margin="20, 0, 20, 0" Stroke="Black" />
+                                <TextBlock Text="{x:Bind Category.Name}" Width="100"/>
+                                <Rectangle VerticalAlignment="Stretch" Width="1" Margin="20, 0, 20, 0" Stroke="Black" />
+                                <TextBlock Text="{x:Bind CurrentPrice}" Width="50"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </RelativePanel>
         </Grid>
+
+
+        <ContentDialog x:Name="AddProductsDialog"
+                                   PrimaryButtonText="Add products"
+                                   SecondaryButtonText="Cancel"
+                                   PrimaryButtonClick="AddProductsDialog_PrimaryButtonClick"
+                                   SecondaryButtonClick="AddProductsDialog_SecondaryButtonClick"
+                                   MaxWidth="800">
+
+            <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                <TextBox x:Name="productName" Header="Product Name:" />
+                <TextBox x:Name="productQuantity" Header="Quantity:" />
+                <TextBox x:Name="productQuantityUnit" Header="Quantity Unit:" />
+                <TextBox x:Name="productPrice" Header="Price:" />
+                <ComboBox x:Name="productCategory" Header="Category:" ItemsSource="{x:Bind ShoppingListViewModel.Categories}" DisplayMemberPath="{x:Bind Name}" />
+                <ComboBox x:Name="productStoredIn" Header="Kind of storage:" ItemsSource="{x:Bind ShoppingListViewModel.KindOfStorages}" />
+            </StackPanel>
+        </ContentDialog>
+
+
+        <ContentDialog x:Name="UpdateProductsDialog"
+                                   PrimaryButtonText="Update"
+                                   SecondaryButtonText="Cancel"
+                                   PrimaryButtonClick="UpdateProductsDialog_PrimaryButtonClick" 
+                                   SecondaryButtonClick="UpdateProductsDialog_SecondaryButtonClick"
+                                   MaxWidth="800">
+
+            <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                <TextBlock x:Name="updateProductName" Text="{x:Bind ShoppingListViewModel.SelectedProduct.Name}" />
+                <TextBox x:Name="updateProductQuantity" Text="{x:Bind ShoppingListViewModel.SelectedProduct.Quantity}" />
+                <TextBox x:Name="updateProductQuantityUnit" Text="{x:Bind ShoppingListViewModel.SelectedProduct.QuantityUnit}" />
+                <TextBox x:Name="updateProductPrice" Text="{x:Bind ShoppingListViewModel.SelectedProduct.CurrentPrice}"/>
+                <!--<ComboBox x:Name="updateProductCategory" Header="Category:" ItemsSource="{x:Bind ShoppingListViewModel.Categories}" DisplayMemberPath="{x:Bind Name}" />
+                <ComboBox x:Name="updateProductStoredIn" Header="Kind of storage:" ItemsSource="{x:Bind ShoppingListViewModel.KindOfStorages}" />-->
+            </StackPanel>
+
+        </ContentDialog>
     </Grid>
 </Page>

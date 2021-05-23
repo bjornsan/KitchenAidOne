@@ -32,6 +32,13 @@ namespace KitchenAid.DataAccess.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("StorageProducts");
+
+                    b.HasData(
+                        new
+                        {
+                            StorageId = 1,
+                            ProductId = 1
+                        });
                 });
 
             modelBuilder.Entity("KitchenAid.Model.Inventory.Category", b =>
@@ -52,6 +59,68 @@ namespace KitchenAid.DataAccess.Migrations
                     b.HasKey("CategoryId");
 
                     b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            CategoryId = 1,
+                            Description = "All kind of fish",
+                            Name = "Fish"
+                        },
+                        new
+                        {
+                            CategoryId = 2,
+                            Description = "Meat from pig",
+                            Name = "Pork"
+                        },
+                        new
+                        {
+                            CategoryId = 3,
+                            Description = "Meat from ox",
+                            Name = "Ox"
+                        },
+                        new
+                        {
+                            CategoryId = 4,
+                            Description = "Meat from deer",
+                            Name = "Deer"
+                        },
+                        new
+                        {
+                            CategoryId = 5,
+                            Description = "Meat from elk",
+                            Name = "Elk"
+                        },
+                        new
+                        {
+                            CategoryId = 6,
+                            Description = "Meat from reindeer",
+                            Name = "Reindeer"
+                        },
+                        new
+                        {
+                            CategoryId = 7,
+                            Description = "Milk, yoghurt etc.",
+                            Name = "Dairy"
+                        },
+                        new
+                        {
+                            CategoryId = 8,
+                            Description = "All kind of pasta",
+                            Name = "Pasta"
+                        },
+                        new
+                        {
+                            CategoryId = 9,
+                            Description = "All sorts of sweets",
+                            Name = "Sweets"
+                        },
+                        new
+                        {
+                            CategoryId = 10,
+                            Description = "Cleaning products",
+                            Name = "Cleaning"
+                        });
                 });
 
             modelBuilder.Entity("KitchenAid.Model.Inventory.PriceHistory", b =>
@@ -67,9 +136,6 @@ namespace KitchenAid.DataAccess.Migrations
                     b.Property<double>("Price")
                         .HasColumnType("float");
 
-                    b.Property<string>("PriceUnit")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
@@ -78,6 +144,36 @@ namespace KitchenAid.DataAccess.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("PriceHistories");
+
+                    b.HasData(
+                        new
+                        {
+                            PriceHistoryId = 1,
+                            Date = new DateTime(2021, 4, 24, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Price = 170.0,
+                            ProductId = 1
+                        },
+                        new
+                        {
+                            PriceHistoryId = 2,
+                            Date = new DateTime(2021, 4, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Price = 172.0,
+                            ProductId = 1
+                        },
+                        new
+                        {
+                            PriceHistoryId = 3,
+                            Date = new DateTime(2021, 4, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Price = 179.0,
+                            ProductId = 1
+                        },
+                        new
+                        {
+                            PriceHistoryId = 4,
+                            Date = new DateTime(2021, 4, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Price = 123.0,
+                            ProductId = 1
+                        });
                 });
 
             modelBuilder.Entity("KitchenAid.Model.Inventory.Product", b =>
@@ -112,6 +208,18 @@ namespace KitchenAid.DataAccess.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Products");
+
+                    b.HasData(
+                        new
+                        {
+                            ProductId = 1,
+                            CategoryId = 1,
+                            CurrentPrice = 245.0,
+                            Name = "Norwegian salmon",
+                            Quantity = 2.2999999999999998,
+                            QuantityUnit = "kg",
+                            StoredIn = 1
+                        });
                 });
 
             modelBuilder.Entity("KitchenAid.Model.Inventory.Storage", b =>
@@ -130,6 +238,14 @@ namespace KitchenAid.DataAccess.Migrations
                     b.HasKey("StorageId");
 
                     b.ToTable("Storages");
+
+                    b.HasData(
+                        new
+                        {
+                            StorageId = 1,
+                            CreatedOn = new DateTime(2021, 5, 23, 22, 25, 18, 636, DateTimeKind.Local).AddTicks(2160),
+                            KindOfStorage = 0
+                        });
                 });
 
             modelBuilder.Entity("KitchenAid.Model.Recipes.Ingredient", b =>

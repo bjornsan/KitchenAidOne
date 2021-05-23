@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-using System;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace KitchenAid.DataAccess.Migrations
 {
@@ -127,7 +127,6 @@ namespace KitchenAid.DataAccess.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Date = table.Column<DateTime>(nullable: false),
                     Price = table.Column<double>(nullable: false),
-                    PriceUnit = table.Column<string>(nullable: true),
                     ProductId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -164,6 +163,49 @@ namespace KitchenAid.DataAccess.Migrations
                         principalColumn: "StorageId",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.InsertData(
+                table: "Categories",
+                columns: new[] { "CategoryId", "Description", "Name" },
+                values: new object[,]
+                {
+                    { 1, "All kind of fish", "Fish" },
+                    { 2, "Meat from pig", "Pork" },
+                    { 3, "Meat from ox", "Ox" },
+                    { 4, "Meat from deer", "Deer" },
+                    { 5, "Meat from elk", "Elk" },
+                    { 6, "Meat from reindeer", "Reindeer" },
+                    { 7, "Milk, yoghurt etc.", "Dairy" },
+                    { 8, "All kind of pasta", "Pasta" },
+                    { 9, "All sorts of sweets", "Sweets" },
+                    { 10, "Cleaning products", "Cleaning" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Storages",
+                columns: new[] { "StorageId", "CreatedOn", "KindOfStorage" },
+                values: new object[] { 1, new DateTime(2021, 5, 23, 22, 25, 18, 636, DateTimeKind.Local).AddTicks(2160), 0 });
+
+            migrationBuilder.InsertData(
+                table: "Products",
+                columns: new[] { "ProductId", "CategoryId", "CurrentPrice", "Name", "Quantity", "QuantityUnit", "StoredIn" },
+                values: new object[] { 1, 1, 245.0, "Norwegian salmon", 2.2999999999999998, "kg", 1 });
+
+            migrationBuilder.InsertData(
+                table: "PriceHistories",
+                columns: new[] { "PriceHistoryId", "Date", "Price", "ProductId" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(2021, 4, 24, 0, 0, 0, 0, DateTimeKind.Unspecified), 170.0, 1 },
+                    { 2, new DateTime(2021, 4, 18, 0, 0, 0, 0, DateTimeKind.Unspecified), 172.0, 1 },
+                    { 3, new DateTime(2021, 4, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), 179.0, 1 },
+                    { 4, new DateTime(2021, 4, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), 123.0, 1 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "StorageProducts",
+                columns: new[] { "StorageId", "ProductId" },
+                values: new object[] { 1, 1 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Ingredients_RecipeId",
