@@ -7,11 +7,16 @@ namespace KitchenAid.App.Views
 {
     public sealed partial class RecipeFinderPage : Page
     {
-        public RecipeFinderViewModel ViewModel { get; } = new RecipeFinderViewModel();
+        public RecipeFinderViewModel RecipeFinderViewModel { get; } = new RecipeFinderViewModel();
 
         public RecipeFinderPage()
         {
             InitializeComponent();
+        }
+
+        private void TestButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+            RecipeFinderViewModel.FindRecipes();
         }
     }
 }

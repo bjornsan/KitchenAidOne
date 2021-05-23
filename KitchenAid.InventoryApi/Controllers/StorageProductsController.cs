@@ -1,12 +1,10 @@
-﻿using System;
+﻿using KitchenAid.DataAccess;
+using KitchenAid.Model.Helper;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using KitchenAid.DataAccess;
-using KitchenAid.Model.Helper;
 
 namespace KitchenAid.InventoryApi.Controllers
 {

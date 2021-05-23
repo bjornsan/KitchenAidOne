@@ -67,12 +67,12 @@ namespace KitchenAid.DataAccess
             modelBuilder.Entity<Storage>().HasData(new Storage { StorageId = 1, CreatedOn = DateTime.Now, KindOfStorage = KindOfStorage.MainInventory });
 
             // salmon    
-            modelBuilder.Entity<Product>().HasData(new Product { ProductId = 1, Name = "Norwegian salmon", Quantity = 2.3, QuantityUnit = "kg", CategoryId = 1, CurrentPrice = 245, StoredIn = KindOfStorage.Fridge});
+            modelBuilder.Entity<Product>().HasData(new Product { ProductId = 1, Name = "Norwegian salmon", Quantity = 2.3, QuantityUnit = "kg", CategoryId = 1, CurrentPrice = 245, StoredIn = KindOfStorage.Fridge });
             modelBuilder.Entity<PriceHistory>().HasData(new PriceHistory { PriceHistoryId = 1, ProductId = 1, Date = new DateTime(2021, 04, 24), Price = 170 });
             modelBuilder.Entity<PriceHistory>().HasData(new PriceHistory { PriceHistoryId = 2, ProductId = 1, Date = new DateTime(2021, 04, 18), Price = 172 });
             modelBuilder.Entity<PriceHistory>().HasData(new PriceHistory { PriceHistoryId = 3, ProductId = 1, Date = new DateTime(2021, 04, 10), Price = 179 });
             modelBuilder.Entity<PriceHistory>().HasData(new PriceHistory { PriceHistoryId = 4, ProductId = 1, Date = new DateTime(2021, 04, 02), Price = 123 });
-        
+
             modelBuilder.Entity<StorageProduct>().HasData(new StorageProduct { StorageId = 1, ProductId = 1 });
 
             //

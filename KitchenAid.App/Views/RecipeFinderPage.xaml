@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="using:KitchenAid.Model.Recipes"
     Style="{StaticResource PageStyle}"
     mc:Ignorable="d">
 
@@ -12,27 +13,48 @@
         Margin="{StaticResource SmallLeftRightMargin}">
         <Pivot
             x:Name="Items">
-            <Pivot.HeaderTemplate>
-                <DataTemplate>
-                    <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" Text="{Binding}" />
-                </DataTemplate>
-            </Pivot.HeaderTemplate>
-            <PivotItem x:Uid="RecipeFinder_PivotItem1">
+            <PivotItem x:Uid="FindRecipe" Header="Find Recipe">
                 <Grid Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}">
-                    <!--
-                        The SystemControlPageBackgroundChromeLowBrush background represents where you should place your content. 
-                        Place your content here.
-                    -->
+                    <TextBlock Text="Find Recipe"/>
+
+                    <Button x:Name="TestButton" Content="Test" Click="TestButton_Click" />
+                </Grid>
+            </PivotItem>
+
+            <PivotItem x:Uid="SearchResults" Header="Search Results">
+                <Grid Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}">
+                    <RelativePanel>
+                        <ListView x:Name="lvSearchResults" ItemsSource="{x:Bind RecipeFinderViewModel.Recipes}" Margin="0,50,0,0" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWith="lvIngredients" SelectedItem="{x:Bind RecipeFinderViewModel.SelectedRecipe, Mode=TwoWay}">
+                            <ListView.ItemTemplate>
+                                <DataTemplate x:DataType="model:Recipe">
+                                    <StackPanel Orientation="Vertical">
+                                        <TextBlock Text="{x:Bind Title}" Width="200"/>
+                                        <Image Source="{x:Bind Image}" Height="100"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+
+                        <ListView x:Name="lvIngredients" ItemsSource="{x:Bind RecipeFinderViewModel.Ingredients}" Margin="0,50,0,0" RelativePanel.AlignRightWithPanel="True">
+                            <ListView.ItemTemplate>
+                                <DataTemplate x:DataType="model:Ingredient">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{x:Bind Name}" Width="200"/>
+                                        <TextBlock Text="{x:Bind Amount}" Width="200"/>
+                                        <TextBlock Text="{x:Bind Unit}" Width="200"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </RelativePanel>
+
 
                 </Grid>
             </PivotItem>
-            
-            <PivotItem x:Uid="RecipeFinder_PivotItem2">
+
+            <PivotItem x:Uid="Favorites" Header="Favorites">
                 <Grid Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}">
-                    <!--
-                        The SystemControlPageBackgroundChromeLowBrush background represents where you should place your content. 
-                        Place your content here.
-                    -->
+                    <TextBlock Text="Favorites"/>
 
                 </Grid>
             </PivotItem>
