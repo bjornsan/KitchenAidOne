@@ -1,0 +1,64 @@
+﻿<Page
+    x:Class="KitchenAid.App.Views.InventoryPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model_inventory="using:KitchenAid.Model.Inventory"
+    Style="{StaticResource PageStyle}"
+    mc:Ignorable="d">
+    <Grid x:Name="ContentArea" Margin="{StaticResource SmallLeftRightMargin}">
+        <Grid>
+            <RelativePanel>
+                <StackPanel x:Name="AddStorageBox" Orientation="Horizontal" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWith="storageCommands" RelativePanel.AlignTopWithPanel="True" Margin="0, 50, 0, 0" >
+                    <Button x:Name="NewShoppingListBtn" Content="New Shopping List" Click="NewShoppingListBtn_Click" />
+                    <Button x:Name="UpdateList" Content="Update selected list" Click="UpdateList_Click" Margin="20, 0, 0, 0"/>
+                </StackPanel>
+
+                <CommandBar x:Name="storageCommands" RelativePanel.AlignRightWithPanel="True" Margin="0, 50, 0, 0">
+                    <AppBarButton x:Name="Add" Content="Add Product" Icon="Add" Command="{x:Bind InventoryViewModel.AddCommand}" />
+                    <AppBarButton  x:Name="Delete" Content="Delete Product" Icon="Cancel" Command="{x:Bind InventoryViewModel.DeleteCommand}" CommandParameter="{Binding ElementName=lvStorages, Path=SelectedItem}"/>
+                </CommandBar>
+
+                <ListView x:Name="lvStorages" ItemsSource="{x:Bind InventoryViewModel.Storages}" RelativePanel.AlignLeftWithPanel="True" RelativePanel.Below="AddStorageBox" Margin="0, 20, 0, 0" SelectedItem="{x:Bind InventoryViewModel.SelectedStorage, Mode=TwoWay}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="model_inventory:Storage">
+                            <StackPanel>
+                                <TextBlock Text="{x:Bind CreatedOn}" />
+                                <Rectangle VerticalAlignment="Stretch" Width="1" Margin="10" Stroke="Black" />
+                                <TextBlock Text="{x:Bind KindOfStorage}" />
+                                <Rectangle VerticalAlignment="Stretch" Width="1" Margin="10" Stroke="Black" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+
+                <StackPanel x:Name="titles" Orientation="Horizontal" Width="800" RelativePanel.Below="storageCommands" RelativePanel.AlignLeftWith="lvStorages" Margin="200, 20, 0, 0">
+                    <TextBlock Text="Product name:" Width="200"/>
+                    <Rectangle VerticalAlignment="Stretch" Width="1" Margin="2" Stroke="Black" />
+                    <TextBlock Text="Quantity:" Width="200"/>
+                    <Rectangle VerticalAlignment="Stretch" Width="1" Margin="2" Stroke="Black" />
+                    <TextBlock Text="Unit:" Width="200"/>
+                    <Rectangle VerticalAlignment="Stretch" Width="1" Margin="2" Stroke="Black" />
+                    <TextBlock Text="Category:" Width="200"/>
+                </StackPanel>
+
+                <ListView x:Name="lvProducts" ItemsSource="{x:Bind InventoryViewModel.Products}" RelativePanel.Below="titles" RelativePanel.AlignLeftWith="lvStorages" Margin="200, 20, 0, 0">
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="model_inventory:Product">
+                            <StackPanel Orientation="Horizontal" Width="800">
+                                <TextBlock Text="{x:Bind Name}" Width="200"/>
+                                <Rectangle VerticalAlignment="Stretch" Width="1" Margin="10" Stroke="Black" />
+                                <TextBlock Text="{x:Bind Quantity}" Width="200"/>
+                                <Rectangle VerticalAlignment="Stretch" Width="1" Margin="10" Stroke="Black" />
+                                <TextBlock Text="{x:Bind QuantityUnit}" Width="200"/>
+                                <Rectangle VerticalAlignment="Stretch" Width="1" Margin="10" Stroke="Black" />
+                                <TextBlock Text="{x:Bind Category.Name}" Width="200"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </RelativePanel>
+        </Grid>
+    </Grid>
+</Page>
