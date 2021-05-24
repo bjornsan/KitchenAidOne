@@ -48,6 +48,16 @@
                                 </DataTemplate>
                             </ListView.ItemTemplate>
                         </ListView>
+
+                        <ListView x:Name="lvInstructions" ItemsSource="{x:Bind RecipeFinderViewModel.Instructions}" Margin="0,50,0,0" RelativePanel.AlignRightWithPanel="True" RelativePanel.Below="lvIngredients">
+                            <ListView.ItemTemplate>
+                                <DataTemplate x:DataType="x:String">
+                                    <StackPanel Orientation="Vertical">
+                                        <TextBlock  Text="{Binding}"/>
+                                  </StackPanel>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
                     </RelativePanel>
 
 
@@ -56,8 +66,20 @@
 
             <PivotItem x:Uid="Favorites" Header="Favorites">
                 <Grid Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}">
-                    <TextBlock Text="Favorites"/>
 
+                    <AppBarButton x:Name="RemoveFavorite" Content="Remove from favorites" Icon="Cancel" Command="{x:Bind RecipeFinderViewModel.DeleteCommand}" CommandParameter="{Binding ElementName=lvFavorites, Path=SelectedItem}" />
+
+                    <ListView x:Name="lvFavorites" ItemsSource="{x:Bind RecipeFinderViewModel.Favorites}" Margin="0,50,0,0" RelativePanel.AlignLeftWithPanel="True">
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:DataType="model:Recipe">
+                                <StackPanel Orientation="Vertical">
+                                    <Image Source="{x:Bind Image}" Height="100"/>
+                                    <TextBlock Text="{x:Bind Title}" Width="200"/>
+                                    <AppBarButton ></AppBarButton>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
                 </Grid>
             </PivotItem>
         </Pivot>

@@ -4,6 +4,7 @@ using KitchenAid.App.Helpers;
 using KitchenAid.Model.Recipes;
 using System;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace KitchenAid.App.ViewModels
@@ -11,9 +12,11 @@ namespace KitchenAid.App.ViewModels
     public class RecipeFinderViewModel : Observable
     {
         public ICommand AddCommand { get; set; }
+        public ICommand DeleteCommand { get; set; }
         public ObservableCollection<Recipe> Recipes { get; } = new ObservableCollection<Recipe>();
         public ObservableCollection<Recipe> Favorites { get; } = new ObservableCollection<Recipe>();
         public ObservableCollection<Ingredient> Ingredients { get; } = new ObservableCollection<Ingredient>();
+        public ObservableCollection<String> Instructions { get; } = new ObservableCollection<String>();
 
         private readonly Recipes recipeDataAccess = new Recipes();
 
@@ -27,8 +30,19 @@ namespace KitchenAid.App.ViewModels
                 Set(ref selectedRecipe, value);
 
                 if (value != null)
-                    LoadRecipeInformationAsync(((Recipe)value).RecipeId);
+                    GetRecipeInformationAsync(((Recipe)value).Id);
 
+            }
+        }
+
+        private Recipe selectedFavorite;
+
+        public Recipe SelectedFavorite
+        {
+            get => selectedFavorite;
+            set
+            {
+                Set(ref selectedFavorite, value);
             }
         }
 
@@ -39,12 +53,19 @@ namespace KitchenAid.App.ViewModels
             {
                 if (recipe == null)
                 {
+                    // TODO: LOG? MAYBE DO SOME OTHER STUFF. FIX ME.
                     Console.WriteLine("NOT FOUND");
                 }
 
                 if (await recipeDataAccess.AddRecipeAsync(recipe))
                     Favorites.Add(recipe);
             });
+
+            DeleteCommand = new RelayCommand<Recipe>(async param =>
+            {
+                if (await recipeDataAccess.DeleteRecipeAsync((Recipe)param))
+                    Favorites.Remove(param);
+            }, param => param != null);
         }
 
         public async void FindRecipes(string[] ingredients = null)
@@ -60,12 +81,12 @@ namespace KitchenAid.App.ViewModels
                 Recipes.Add(recipe);
         }
 
-        public void LoadRecipeInformationAsync(int id)
+        public void GetRecipeInformationAsync(int id)
         {
             if (id < 0)
                 return;
 
-            //await recipeDataAccess.GetRecipeInformationAsync(id);
+            GetInstructionsAsync(id);
 
             Ingredients.Clear();
 
@@ -77,5 +98,40 @@ namespace KitchenAid.App.ViewModels
 
         }
 
+        public async void GetInstructionsAsync(int id)
+        {
+            Instructions.Clear();
+
+            var instructions = await recipeDataAccess.GetRecipeInformationAsync(id);
+
+            if (instructions.Instructions != null)
+            {
+                string instructionsReformatted = instructions.Instructions.Replace("<p>", "");
+                string[] instructionSteps = instructionsReformatted.Split("</p>");
+
+                foreach (var sub in instructionSteps)
+                {
+                    var trimmed = sub.Trim();
+
+                    if (!string.IsNullOrEmpty(trimmed))
+                        Instructions.Add(trimmed);
+                }
+
+            }
+
+        }
+
+        public async void GetFavoritesAsync()
+        {
+            var favorites = await recipeDataAccess.GetFavoritesAsync();
+
+            if (favorites != null)
+            {
+                foreach (Recipe recipe in favorites)
+                {
+                    Favorites.Add(recipe);
+                }
+            }
+        }
     }
 }

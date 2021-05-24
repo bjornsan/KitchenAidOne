@@ -15,7 +15,7 @@ namespace KitchenAid.App.DataAccess
 
         // Requests from Spoonacular API
         // apiKey=429d6ef10f5b42c5866251adb3e9d796
-        static readonly string requestUri = "https://api.spoonacular.com/recipes/findByIngredients?apiKey=429d6ef10f5b42c5866251adb3e9d796&ingredients=";
+        static readonly string requestUri = @"https://api.spoonacular.com/recipes/findByIngredients?apiKey=429d6ef10f5b42c5866251adb3e9d796&ingredients=";
 
 
         public Recipes()
@@ -43,13 +43,14 @@ namespace KitchenAid.App.DataAccess
             }
         }
 
-        public async Task<IEnumerable<Recipe>> GetRecipeInformationAsync(int id)
+        public async Task<Instruction> GetRecipeInformationAsync(int id)
         {
-            // TODO: THIS IS JUST BOILER PLATE CODE - REPLACE WITH REAL CODE
-            var response = await _httpClient.GetAsync(baseUri);
+            var requestUri = $"https://api.spoonacular.com/recipes/{id}/information?includeInstructions=true&&apiKey=429d6ef10f5b42c5866251adb3e9d796";
+
+            var response = await _httpClient.GetAsync(new Uri(requestUri));
             string json = await response.Content.ReadAsStringAsync();
-            Recipe[] recipes = JsonConvert.DeserializeObject<Recipe[]>(json);
-            return recipes;
+            Instruction instructions = JsonConvert.DeserializeObject<Instruction>(json);
+            return instructions;
         }
 
         internal async Task<bool> AddRecipeAsync(Recipe recipe)
@@ -68,5 +69,44 @@ namespace KitchenAid.App.DataAccess
             else
                 return false;
         }
+
+        internal async Task<IEnumerable<Recipe>> GetFavoritesAsync()
+        {
+            var response = await _httpClient.GetAsync(new Uri(baseUri.ToString()));
+            string json = await response.Content.ReadAsStringAsync();
+            Recipe[] favorites = JsonConvert.DeserializeObject<Recipe[]>(json);
+            return favorites;
+
+        }
+
+        internal async Task<bool> DeleteRecipeAsync(Recipe recipe)
+        {
+            HttpResponseMessage result = await _httpClient.DeleteAsync(new Uri(baseUri, $"recipes/{recipe.RecipeId}"));
+            return result.IsSuccessStatusCode;
+        }
+
+
+
+        //public async Task<IEnumerable<T>> GetRequest<T>(string requestUri)
+        //{
+        //    if (string.IsNullOrEmpty(requestUri))
+        //        return null;
+
+        //    var response = await _httpClient.GetAsync(requestUri);
+        //    string json = await response.Content.ReadAsStringAsync();
+        //    T[] objects = JsonConvert.DeserializeObject<T[]>(json);
+        //    return objects;
+        //}
+
+        //public async Task<IEnumerable<T>> GetRequest<T>(string requestUri, int id = -1)
+        //{
+        //    if (string.IsNullOrEmpty(requestUri) || id < 0)
+        //        return null;
+
+        //    var response = await _httpClient.GetAsync(requestUri);
+        //    string json = await response.Content.ReadAsStringAsync();
+        //    T[] objects = JsonConvert.DeserializeObject<T[]>(json);
+        //    return objects;
+        //}
     }
 }

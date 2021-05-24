@@ -2,6 +2,7 @@
 using KitchenAid.App.ViewModels;
 
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Navigation;
 
 namespace KitchenAid.App.Views
 {
@@ -12,6 +13,11 @@ namespace KitchenAid.App.Views
         public RecipeFinderPage()
         {
             InitializeComponent();
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            RecipeFinderViewModel.GetFavoritesAsync();
         }
 
         private void TestButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
