@@ -38,6 +38,46 @@ namespace KitchenAid.DataAccess.Migrations
                         {
                             StorageId = 1,
                             ProductId = 1
+                        },
+                        new
+                        {
+                            StorageId = 1,
+                            ProductId = 2
+                        },
+                        new
+                        {
+                            StorageId = 1,
+                            ProductId = 3
+                        },
+                        new
+                        {
+                            StorageId = 1,
+                            ProductId = 4
+                        },
+                        new
+                        {
+                            StorageId = 1,
+                            ProductId = 5
+                        },
+                        new
+                        {
+                            StorageId = 1,
+                            ProductId = 6
+                        },
+                        new
+                        {
+                            StorageId = 1,
+                            ProductId = 7
+                        },
+                        new
+                        {
+                            StorageId = 1,
+                            ProductId = 8
+                        },
+                        new
+                        {
+                            StorageId = 1,
+                            ProductId = 9
                         });
                 });
 
@@ -123,59 +163,6 @@ namespace KitchenAid.DataAccess.Migrations
                         });
                 });
 
-            modelBuilder.Entity("KitchenAid.Model.Inventory.PriceHistory", b =>
-                {
-                    b.Property<int>("PriceHistoryId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<double>("Price")
-                        .HasColumnType("float");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.HasKey("PriceHistoryId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("PriceHistories");
-
-                    b.HasData(
-                        new
-                        {
-                            PriceHistoryId = 1,
-                            Date = new DateTime(2021, 4, 24, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Price = 170.0,
-                            ProductId = 1
-                        },
-                        new
-                        {
-                            PriceHistoryId = 2,
-                            Date = new DateTime(2021, 4, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Price = 172.0,
-                            ProductId = 1
-                        },
-                        new
-                        {
-                            PriceHistoryId = 3,
-                            Date = new DateTime(2021, 4, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Price = 179.0,
-                            ProductId = 1
-                        },
-                        new
-                        {
-                            PriceHistoryId = 4,
-                            Date = new DateTime(2021, 4, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Price = 123.0,
-                            ProductId = 1
-                        });
-                });
-
             modelBuilder.Entity("KitchenAid.Model.Inventory.Product", b =>
                 {
                     b.Property<int>("ProductId")
@@ -219,6 +206,86 @@ namespace KitchenAid.DataAccess.Migrations
                             Quantity = 2.2999999999999998,
                             QuantityUnit = "kg",
                             StoredIn = 1
+                        },
+                        new
+                        {
+                            ProductId = 2,
+                            CategoryId = 2,
+                            CurrentPrice = 49.0,
+                            Name = "Pork Neck",
+                            Quantity = 4.5,
+                            QuantityUnit = "kg",
+                            StoredIn = 1
+                        },
+                        new
+                        {
+                            ProductId = 3,
+                            CategoryId = 3,
+                            CurrentPrice = 349.0,
+                            Name = "Ox Filet",
+                            Quantity = 1.3,
+                            QuantityUnit = "kg",
+                            StoredIn = 1
+                        },
+                        new
+                        {
+                            ProductId = 4,
+                            CategoryId = 4,
+                            CurrentPrice = 549.0,
+                            Name = "Elk ribs",
+                            Quantity = 2.5,
+                            QuantityUnit = "kg",
+                            StoredIn = 1
+                        },
+                        new
+                        {
+                            ProductId = 5,
+                            CategoryId = 6,
+                            CurrentPrice = 789.0,
+                            Name = "Renskav",
+                            Quantity = 4.5,
+                            QuantityUnit = "kg",
+                            StoredIn = 2
+                        },
+                        new
+                        {
+                            ProductId = 6,
+                            CategoryId = 7,
+                            CurrentPrice = 20.0,
+                            Name = "Tine melk",
+                            Quantity = 3.0,
+                            QuantityUnit = "l",
+                            StoredIn = 1
+                        },
+                        new
+                        {
+                            ProductId = 7,
+                            CategoryId = 8,
+                            CurrentPrice = 45.0,
+                            Name = "Tagliatelle",
+                            Quantity = 500.0,
+                            QuantityUnit = "g",
+                            StoredIn = 3
+                        },
+                        new
+                        {
+                            ProductId = 8,
+                            CategoryId = 9,
+                            CurrentPrice = 29.0,
+                            Name = "Algrens Biler",
+                            Quantity = 5.0,
+                            QuantityUnit = "piece",
+                            StoredIn = 3
+                        },
+                        new
+                        {
+                            ProductId = 9,
+                            CategoryId = 10,
+                            CurrentPrice = 199.0,
+                            Name = "Via Color",
+                            Quantity = 4.2999999999999998,
+                            QuantityUnit = "kg",
+                            StoredIn = 3
                         });
                 });
 
@@ -243,7 +310,7 @@ namespace KitchenAid.DataAccess.Migrations
                         new
                         {
                             StorageId = 1,
-                            CreatedOn = new DateTime(2021, 5, 23, 22, 25, 18, 636, DateTimeKind.Local).AddTicks(2160),
+                            CreatedOn = new DateTime(2021, 5, 24, 16, 25, 2, 310, DateTimeKind.Local).AddTicks(8649),
                             KindOfStorage = 0
                         });
                 });
@@ -276,13 +343,10 @@ namespace KitchenAid.DataAccess.Migrations
 
             modelBuilder.Entity("KitchenAid.Model.Recipes.Instruction", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("InstructionId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("InstructionId")
-                        .HasColumnType("int");
 
                     b.Property<string>("Instructions")
                         .HasColumnType("nvarchar(max)");
@@ -296,7 +360,7 @@ namespace KitchenAid.DataAccess.Migrations
                     b.Property<int>("Servings")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("InstructionId");
 
                     b.HasIndex("RecipeId");
 
@@ -305,21 +369,21 @@ namespace KitchenAid.DataAccess.Migrations
 
             modelBuilder.Entity("KitchenAid.Model.Recipes.Recipe", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("RecipeId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
                     b.Property<string>("Image")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("RecipeId")
-                        .HasColumnType("int");
 
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("RecipeId");
 
                     b.ToTable("Recipes");
                 });
@@ -335,15 +399,6 @@ namespace KitchenAid.DataAccess.Migrations
                     b.HasOne("KitchenAid.Model.Inventory.Storage", "Storage")
                         .WithMany("Products")
                         .HasForeignKey("StorageId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("KitchenAid.Model.Inventory.PriceHistory", b =>
-                {
-                    b.HasOne("KitchenAid.Model.Inventory.Product", "Product")
-                        .WithMany("PriceHistory")
-                        .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace KitchenAid.Model.Recipes
 {
@@ -21,7 +22,7 @@ namespace KitchenAid.Model.Recipes
 
 
         // Properties used to handle actions aginst the database with Entity Framework
+        [Key]
         public int RecipeId { get; set; }
-        public ICollection<Ingredient> Ingredients = new List<Ingredient>();
     }
 }

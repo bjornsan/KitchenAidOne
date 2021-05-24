@@ -24,7 +24,6 @@ namespace KitchenAid.Model.Inventory
         public int CategoryId { get; set; }
         public Category Category { get; set; }
 
-        public ICollection<PriceHistory> PriceHistory { get; } = new List<PriceHistory>();
         public ICollection<StorageProduct> Storages { get; } = new List<StorageProduct>();
     }
 }

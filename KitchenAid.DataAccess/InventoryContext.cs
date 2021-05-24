@@ -14,7 +14,6 @@ namespace KitchenAid.DataAccess
         public DbSet<Product> Products { get; set; }
 
         public DbSet<StorageProduct> StorageProducts { get; set; }
-        public DbSet<PriceHistory> PriceHistories { get; set; }
         public DbSet<Category> Categories { get; set; }
 
         // Recipe contexts
@@ -26,13 +25,18 @@ namespace KitchenAid.DataAccess
         public InventoryContext() { }
         public InventoryContext(DbContextOptions<InventoryContext> options) : base(options) { }
 
+        #region Used only for creating the database
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder
             {
-                DataSource = @"(localdb)\MSSQLLocalDB",
-                InitialCatalog = "TESTING.Database",
-                IntegratedSecurity = true
+                //DataSource = @"(localdb)\MSSQLLocalDB",
+                //InitialCatalog = "TESTING.Database",
+                //IntegratedSecurity = true
+                DataSource = @"Donau.hiof.no",
+                InitialCatalog = "bjornsan",
+                UserID = "bjornsan",
+                Password = "Fs;M}4hY"
             };
 
             optionsBuilder.UseSqlServer(builder.ConnectionString.ToString());
@@ -51,8 +55,11 @@ namespace KitchenAid.DataAccess
                  .HasOne(sp => sp.Product)
                  .WithMany(p => p.Storages)
                  .HasForeignKey(sp => sp.ProductId);
+        
 
+            // Seeding mockup data to the database.
 
+            // Categories
             modelBuilder.Entity<Category>().HasData(new Category { CategoryId = 1, Name = "Fish", Description = "All kind of fish" });
             modelBuilder.Entity<Category>().HasData(new Category { CategoryId = 2, Name = "Pork", Description = "Meat from pig" });
             modelBuilder.Entity<Category>().HasData(new Category { CategoryId = 3, Name = "Ox", Description = "Meat from ox" });
@@ -63,26 +70,46 @@ namespace KitchenAid.DataAccess
             modelBuilder.Entity<Category>().HasData(new Category { CategoryId = 8, Name = "Pasta", Description = "All kind of pasta" });
             modelBuilder.Entity<Category>().HasData(new Category { CategoryId = 9, Name = "Sweets", Description = "All sorts of sweets" });
             modelBuilder.Entity<Category>().HasData(new Category { CategoryId = 10, Name = "Cleaning", Description = "Cleaning products" });
-
+        
+            // Main inventory
             modelBuilder.Entity<Storage>().HasData(new Storage { StorageId = 1, CreatedOn = DateTime.Now, KindOfStorage = KindOfStorage.MainInventory });
 
-            // salmon    
+            // Salmon    
             modelBuilder.Entity<Product>().HasData(new Product { ProductId = 1, Name = "Norwegian salmon", Quantity = 2.3, QuantityUnit = "kg", CategoryId = 1, CurrentPrice = 245, StoredIn = KindOfStorage.Fridge });
-            modelBuilder.Entity<PriceHistory>().HasData(new PriceHistory { PriceHistoryId = 1, ProductId = 1, Date = new DateTime(2021, 04, 24), Price = 170 });
-            modelBuilder.Entity<PriceHistory>().HasData(new PriceHistory { PriceHistoryId = 2, ProductId = 1, Date = new DateTime(2021, 04, 18), Price = 172 });
-            modelBuilder.Entity<PriceHistory>().HasData(new PriceHistory { PriceHistoryId = 3, ProductId = 1, Date = new DateTime(2021, 04, 10), Price = 179 });
-            modelBuilder.Entity<PriceHistory>().HasData(new PriceHistory { PriceHistoryId = 4, ProductId = 1, Date = new DateTime(2021, 04, 02), Price = 123 });
-
             modelBuilder.Entity<StorageProduct>().HasData(new StorageProduct { StorageId = 1, ProductId = 1 });
 
-            //
-            //modelBuilder.Entity<Product>().HasData(new Product { ProductId = 1, Name = "Norwegian salmon", Quantity = 2.3, QuantityUnit = "kg", CategoryId = 1, CurrentPrice = 245, StoredIn = KindOfStorage.Fridge });
-            //modelBuilder.Entity<PriceHistory>().HasData(new PriceHistory { PriceHistoryId = 1, ProductId = 1, Date = new DateTime(2021, 04, 24), Price = 170 });
-            //modelBuilder.Entity<PriceHistory>().HasData(new PriceHistory { PriceHistoryId = 2, ProductId = 1, Date = new DateTime(2021, 04, 18), Price = 172 });
-            //modelBuilder.Entity<PriceHistory>().HasData(new PriceHistory { PriceHistoryId = 3, ProductId = 1, Date = new DateTime(2021, 04, 10), Price = 179 });
-            //modelBuilder.Entity<PriceHistory>().HasData(new PriceHistory { PriceHistoryId = 4, ProductId = 1, Date = new DateTime(2021, 04, 02), Price = 123 });
+            // Porkneck
+            modelBuilder.Entity<Product>().HasData(new Product() { ProductId = 2, Name = "Pork Neck", Quantity = 4.5, QuantityUnit = "kg", CategoryId = 2, CurrentPrice = 49, StoredIn = KindOfStorage.Fridge });
+            modelBuilder.Entity<StorageProduct>().HasData(new StorageProduct { StorageId = 1, ProductId = 2 });
 
-            //modelBuilder.Entity<StorageProduct>().HasData(new StorageProduct { StorageId = 1, ProductId = 1 });
+            // Oxfillet
+            modelBuilder.Entity<Product>().HasData(new Product() { ProductId = 3, Name = "Ox Filet", Quantity = 1.3, QuantityUnit = "kg", CategoryId = 3, CurrentPrice = 349, StoredIn = KindOfStorage.Fridge });
+            modelBuilder.Entity<StorageProduct>().HasData(new StorageProduct { StorageId = 1, ProductId = 3 });
+
+            // Elk ribs
+            modelBuilder.Entity<Product>().HasData(new Product() { ProductId = 4, Name = "Elk ribs", Quantity = 2.5, QuantityUnit = "kg", CategoryId = 4, CurrentPrice = 549, StoredIn = KindOfStorage.Fridge });
+            modelBuilder.Entity<StorageProduct>().HasData(new StorageProduct { StorageId = 1, ProductId = 4 });
+
+            // Renskav
+            modelBuilder.Entity<Product>().HasData(new Product() { ProductId = 5, Name = "Renskav", Quantity = 4.5, QuantityUnit = "kg", CategoryId = 6, CurrentPrice = 789, StoredIn = KindOfStorage.Freezer });
+            modelBuilder.Entity<StorageProduct>().HasData(new StorageProduct { StorageId = 1, ProductId = 5 });
+
+            // Milk
+            modelBuilder.Entity<Product>().HasData(new Product() { ProductId = 6, Name = "Tine melk", Quantity = 3, QuantityUnit = "l", CategoryId = 7, CurrentPrice = 20, StoredIn = KindOfStorage.Fridge });
+            modelBuilder.Entity<StorageProduct>().HasData(new StorageProduct { StorageId = 1, ProductId = 6 });
+
+            // Tagliaelle
+            modelBuilder.Entity<Product>().HasData(new Product() { ProductId = 7, Name = "Tagliatelle", Quantity = 500, QuantityUnit = "g", CategoryId = 8, CurrentPrice = 45, StoredIn = KindOfStorage.DryStorage });
+            modelBuilder.Entity<StorageProduct>().HasData(new StorageProduct { StorageId = 1, ProductId = 7 });
+
+            // Ahlgrens biler
+            modelBuilder.Entity<Product>().HasData(new Product() { ProductId = 8, Name = "Algrens Biler", Quantity = 5, QuantityUnit = "piece", CategoryId = 9, CurrentPrice = 29, StoredIn = KindOfStorage.DryStorage });
+            modelBuilder.Entity<StorageProduct>().HasData(new StorageProduct { StorageId = 1, ProductId = 8 });
+
+            // Washing powder
+            modelBuilder.Entity<Product>().HasData(new Product() { ProductId = 9, Name = "Via Color", Quantity = 4.3, QuantityUnit = "kg", CategoryId = 10, CurrentPrice = 199, StoredIn = KindOfStorage.DryStorage });
+            modelBuilder.Entity<StorageProduct>().HasData(new StorageProduct { StorageId = 1, ProductId = 9 });
+            #endregion
 
         }
     }

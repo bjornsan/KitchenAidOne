@@ -6,7 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace KitchenAid.InventoryApi
+namespace KitchenAid.RecipeApi
 {
     public class Startup
     {
@@ -24,7 +24,6 @@ namespace KitchenAid.InventoryApi
 
             services.AddDbContext<InventoryContext>(options =>
                 options.UseSqlServer(Configuration["Data:DefaultConnection:ConnectionString"]));
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

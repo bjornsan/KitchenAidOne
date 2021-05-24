@@ -24,12 +24,14 @@
             <PivotItem x:Uid="SearchResults" Header="Search Results">
                 <Grid Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}">
                     <RelativePanel>
+                        <AppBarButton x:Name="AddFavorite" Content="Add to favorite" Icon="SolidStar" Command="{x:Bind RecipeFinderViewModel.AddCommand}" CommandParameter="{Binding ElementName=lvSearchResults, Path=SelectedItem}" />
+
                         <ListView x:Name="lvSearchResults" ItemsSource="{x:Bind RecipeFinderViewModel.Recipes}" Margin="0,50,0,0" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWith="lvIngredients" SelectedItem="{x:Bind RecipeFinderViewModel.SelectedRecipe, Mode=TwoWay}">
                             <ListView.ItemTemplate>
                                 <DataTemplate x:DataType="model:Recipe">
                                     <StackPanel Orientation="Vertical">
-                                        <TextBlock Text="{x:Bind Title}" Width="200"/>
                                         <Image Source="{x:Bind Image}" Height="100"/>
+                                        <TextBlock Text="{x:Bind Title}" Width="200"/>
                                     </StackPanel>
                                 </DataTemplate>
                             </ListView.ItemTemplate>

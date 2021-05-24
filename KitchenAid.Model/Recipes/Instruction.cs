@@ -4,8 +4,6 @@ namespace KitchenAid.Model.Recipes
 {
     public class Instruction
     {
-        [JsonProperty("id")]
-        public int Id { get; set; }
         [JsonProperty("servings")]
         public int Servings { get; set; }
         [JsonProperty("readyInMinutes")]

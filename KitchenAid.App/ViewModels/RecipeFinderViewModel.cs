@@ -2,14 +2,17 @@
 using KitchenAid.App.DataAccess;
 using KitchenAid.App.Helpers;
 using KitchenAid.Model.Recipes;
+using System;
 using System.Collections.ObjectModel;
+using System.Windows.Input;
 
 namespace KitchenAid.App.ViewModels
 {
     public class RecipeFinderViewModel : Observable
     {
-
+        public ICommand AddCommand { get; set; }
         public ObservableCollection<Recipe> Recipes { get; } = new ObservableCollection<Recipe>();
+        public ObservableCollection<Recipe> Favorites { get; } = new ObservableCollection<Recipe>();
         public ObservableCollection<Ingredient> Ingredients { get; } = new ObservableCollection<Ingredient>();
 
         private readonly Recipes recipeDataAccess = new Recipes();
@@ -24,7 +27,7 @@ namespace KitchenAid.App.ViewModels
                 Set(ref selectedRecipe, value);
 
                 if (value != null)
-                   LoadRecipeInformationAsync(((Recipe)value).RecipeId);
+                    LoadRecipeInformationAsync(((Recipe)value).RecipeId);
 
             }
         }
@@ -32,6 +35,16 @@ namespace KitchenAid.App.ViewModels
 
         public RecipeFinderViewModel()
         {
+            AddCommand = new RelayCommand<Recipe>(async recipe =>
+            {
+                if (recipe == null)
+                {
+                    Console.WriteLine("NOT FOUND");
+                }
+
+                if (await recipeDataAccess.AddRecipeAsync(recipe))
+                    Favorites.Add(recipe);
+            });
         }
 
         public async void FindRecipes(string[] ingredients = null)

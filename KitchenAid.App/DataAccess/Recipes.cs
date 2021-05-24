@@ -2,7 +2,6 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,7 +11,7 @@ namespace KitchenAid.App.DataAccess
     public class Recipes
     {
         readonly HttpClient _httpClient = new HttpClient();
-        static readonly Uri baseUri = new Uri("http://localhost:59283/api/recipes");
+        static readonly Uri baseUri = new Uri("http://localhost:9420/api/recipes");
 
         // Requests from Spoonacular API
         // apiKey=429d6ef10f5b42c5866251adb3e9d796
@@ -20,7 +19,7 @@ namespace KitchenAid.App.DataAccess
 
 
         public Recipes()
-        {}
+        { }
 
         public async Task<IEnumerable<Recipe>> FindRecipiesAsync(string[] ingredients)
         {
@@ -51,6 +50,23 @@ namespace KitchenAid.App.DataAccess
             string json = await response.Content.ReadAsStringAsync();
             Recipe[] recipes = JsonConvert.DeserializeObject<Recipe[]>(json);
             return recipes;
+        }
+
+        internal async Task<bool> AddRecipeAsync(Recipe recipe)
+        {
+            string json = JsonConvert.SerializeObject(recipe);
+            HttpResponseMessage result = await _httpClient.PostAsync(baseUri, new StringContent(json, Encoding.UTF8, "application/json"));
+
+            if (result.IsSuccessStatusCode)
+            {
+                json = await result.Content.ReadAsStringAsync();
+                var returnedRecipe = JsonConvert.DeserializeObject<Recipe>(json);
+                recipe.RecipeId = returnedRecipe.RecipeId;
+
+                return true;
+            }
+            else
+                return false;
         }
     }
 }
