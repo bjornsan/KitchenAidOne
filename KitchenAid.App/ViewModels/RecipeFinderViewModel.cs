@@ -3,6 +3,7 @@ using KitchenAid.App.DataAccess;
 using KitchenAid.App.Helpers;
 using KitchenAid.Model.Recipes;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -17,6 +18,13 @@ namespace KitchenAid.App.ViewModels
         public ObservableCollection<Recipe> Favorites { get; } = new ObservableCollection<Recipe>();
         public ObservableCollection<Ingredient> Ingredients { get; } = new ObservableCollection<Ingredient>();
         public ObservableCollection<String> Instructions { get; } = new ObservableCollection<String>();
+        public ObservableCollection<String> SearchIngredients { get; } = new ObservableCollection<String>()
+        {
+            "tomato", "paprika", "pepper", "cucumber", "chili", "corn", "beans", "pasta", "rice", "fish", "pork", "ox", "deer", "chicken", "cheese", "milk",
+            "yoghurt", "onion"
+        };
+        
+
 
         private readonly Recipes recipeDataAccess = new Recipes();
 
@@ -66,12 +74,13 @@ namespace KitchenAid.App.ViewModels
                 if (await recipeDataAccess.DeleteRecipeAsync((Recipe)param))
                     Favorites.Remove(param);
             }, param => param != null);
+
         }
 
         public async void FindRecipes(string[] ingredients = null)
         {
             if (ingredients == null)
-                ingredients = new string[] { "tomato", "pasta", "chicken" };
+                ingredients = new string[]{ "tomato", "pasta", "chicken" };
 
             var recipes = await recipeDataAccess.FindRecipiesAsync(ingredients);
 

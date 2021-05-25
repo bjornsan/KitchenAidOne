@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="using:KitchenAid.Model.Recipes"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     Style="{StaticResource PageStyle}"
     mc:Ignorable="d">
 
@@ -15,24 +16,56 @@
             x:Name="Items">
             <PivotItem x:Uid="FindRecipe" Header="Find Recipe">
                 <Grid Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}">
-                    <TextBlock Text="Find Recipe"/>
 
-                    <Button x:Name="TestButton" Content="Test" Click="TestButton_Click" />
+                    <controls:AdaptiveGridView x:Name="lvSearchIngredients"
+                                           ItemsSource="{x:Bind RecipeFinderViewModel.SearchIngredients}"
+                                           RelativePanel.AlignLeftWithPanel="True"
+                                           RelativePanel.Below="AddStorageBox"
+                                           Margin="0, 20, 0, 0"
+                                           StretchContentForSingleRow="False"
+                                           OneRowModeEnabled="False"
+                                           ItemHeight="100"
+                                           DesiredWidth="100"
+                                           SelectionMode="Multiple"
+                                           IsItemClickEnabled="True"
+                                           Background="CadetBlue"
+                                           >
+
+                        <controls:AdaptiveGridView.ItemTemplate>
+                            <DataTemplate x:DataType="x:String">
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                    <TextBlock Text="{Binding}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </controls:AdaptiveGridView.ItemTemplate>
+                    </controls:AdaptiveGridView>
+
+                    <Button x:Name="TestButton"
+                            Content="Test"
+                            Click="TestButton_Click"/>
                 </Grid>
             </PivotItem>
 
             <PivotItem x:Uid="SearchResults" Header="Search Results">
                 <Grid Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}">
+
                     <RelativePanel>
                         <AppBarButton x:Name="AddFavorite" Content="Add to favorite" Icon="SolidStar" Command="{x:Bind RecipeFinderViewModel.AddCommand}" CommandParameter="{Binding ElementName=lvSearchResults, Path=SelectedItem}" />
 
                         <ListView x:Name="lvSearchResults" ItemsSource="{x:Bind RecipeFinderViewModel.Recipes}" Margin="0,50,0,0" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWith="lvIngredients" SelectedItem="{x:Bind RecipeFinderViewModel.SelectedRecipe, Mode=TwoWay}">
                             <ListView.ItemTemplate>
                                 <DataTemplate x:DataType="model:Recipe">
-                                    <StackPanel Orientation="Vertical">
+                                    <Grid Margin="0,12,0,12" AutomationProperties.Name="{x:Bind Title}">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="150"/>
+                                            <ColumnDefinition Width="200"/>
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
                                         <Image Source="{x:Bind Image}" Height="100"/>
-                                        <TextBlock Text="{x:Bind Title}" Width="200"/>
-                                    </StackPanel>
+                                        <StackPanel Orientation="Vertical" Grid.Column="1">
+                                            <TextBlock Text="{x:Bind Title}" Width="200"/>
+                                        </StackPanel>
+                                    </Grid>
                                 </DataTemplate>
                             </ListView.ItemTemplate>
                         </ListView>
@@ -40,11 +73,18 @@
                         <ListView x:Name="lvIngredients" ItemsSource="{x:Bind RecipeFinderViewModel.Ingredients}" Margin="0,50,0,0" RelativePanel.AlignRightWithPanel="True">
                             <ListView.ItemTemplate>
                                 <DataTemplate x:DataType="model:Ingredient">
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="{x:Bind Name}" Width="200"/>
-                                        <TextBlock Text="{x:Bind Amount}" Width="200"/>
-                                        <TextBlock Text="{x:Bind Unit}" Width="200"/>
-                                    </StackPanel>
+                                    <Grid Margin="0,12,0,12">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="150"/>
+                                            <ColumnDefinition Width="200"/>
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Orientation="Horizontal" Grid.Column="2">
+                                            <TextBlock Text="{x:Bind Name}" Width="200"/>
+                                            <TextBlock Text="{x:Bind Amount}" Width="200"/>
+                                            <TextBlock Text="{x:Bind Unit}" Width="200"/>
+                                        </StackPanel>
+                                    </Grid>
                                 </DataTemplate>
                             </ListView.ItemTemplate>
                         </ListView>
@@ -52,36 +92,51 @@
                         <ListView x:Name="lvInstructions" ItemsSource="{x:Bind RecipeFinderViewModel.Instructions}" Margin="0,50,0,0" RelativePanel.AlignRightWithPanel="True" RelativePanel.Below="lvIngredients">
                             <ListView.ItemTemplate>
                                 <DataTemplate x:DataType="x:String">
-                                    <StackPanel Orientation="Vertical">
-                                        <TextBlock  Text="{Binding}"/>
-                                  </StackPanel>
+                                    <Grid Margin="0,12,0,12">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="150"/>
+                                            <ColumnDefinition Width="200"/>
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Orientation="Vertical" Grid.Column="2">
+                                            <TextBlock  Text="{Binding}"/>
+                                        </StackPanel>
+                                    </Grid>
                                 </DataTemplate>
                             </ListView.ItemTemplate>
                         </ListView>
                     </RelativePanel>
-
-
                 </Grid>
             </PivotItem>
 
             <PivotItem x:Uid="Favorites" Header="Favorites">
                 <Grid Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}">
 
-                    <AppBarButton x:Name="RemoveFavorite" Content="Remove from favorites" Icon="Cancel" Command="{x:Bind RecipeFinderViewModel.DeleteCommand}" CommandParameter="{Binding ElementName=lvFavorites, Path=SelectedItem}" />
+                    <AppBarButton x:Name="RemoveFavorite" Content="Remove from favorites" Icon="Delete" Command="{x:Bind RecipeFinderViewModel.DeleteCommand}" CommandParameter="{Binding ElementName=lvFavorites, Path=SelectedItem}" />
 
                     <ListView x:Name="lvFavorites" ItemsSource="{x:Bind RecipeFinderViewModel.Favorites}" Margin="0,50,0,0" RelativePanel.AlignLeftWithPanel="True">
                         <ListView.ItemTemplate>
                             <DataTemplate x:DataType="model:Recipe">
-                                <StackPanel Orientation="Vertical">
-                                    <Image Source="{x:Bind Image}" Height="100"/>
-                                    <TextBlock Text="{x:Bind Title}" Width="200"/>
-                                    <AppBarButton ></AppBarButton>
-                                </StackPanel>
+                                <Grid Margin="0,12,0,12" AutomationProperties.Name="{x:Bind Title}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" MinWidth="150"/>
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Image Source="{x:Bind Image}" MaxHeight="100" Stretch="Fill"/>
+
+                                    <StackPanel Orientation="Vertical" Grid.Column="1">
+                                        <TextBlock Text="{x:Bind Title}" Width="200"/>
+                                    </StackPanel>
+                                </Grid>
                             </DataTemplate>
                         </ListView.ItemTemplate>
+
                     </ListView>
+
+                    
                 </Grid>
             </PivotItem>
         </Pivot>
     </Grid>
+    
 </Page>
