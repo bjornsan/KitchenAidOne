@@ -17,4 +17,5 @@ namespace KitchenAid.App.Services
             var messageDialog = new MessageDialog(message);
             await messageDialog.ShowAsync();
         }
+    }
 }
