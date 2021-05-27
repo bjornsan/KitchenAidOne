@@ -9,18 +9,26 @@ using System.Threading.Tasks;
 
 namespace KitchenAid.App.DataAccess
 {
+    /// <summary>Data access for recipes.</summary>
     public class Recipes
     {
-        static readonly Uri baseUri = new Uri("http://localhost:9420/api/recipes");
+        /// <summary>The base URI</summary>
+        private readonly Uri baseUri = new Uri("http://localhost:9420/api/recipes");
 
         // Requests from Spoonacular API
         // apiKey=429d6ef10f5b42c5866251adb3e9d796
-        static readonly string requestUri = @"https://api.spoonacular.com/recipes/findByIngredients?apiKey=429d6ef10f5b42c5866251adb3e9d796&ingredients=";
-
+        /// <summary>The request URI</summary>
+        private readonly string requestUri = @"https://api.spoonacular.com/recipes/findByIngredients?apiKey=429d6ef10f5b42c5866251adb3e9d796&ingredients=";
 
         public Recipes()
         { }
 
+        /// <summary>Finds the recipies asynchronous.
+        /// Given a list of ingredients.<br /><br />The request is then built with the stringbuilder.</summary>
+        /// <param name="ingredients">The ingredients.</param>
+        /// <returns>
+        ///   An array of Type Recipe, if found any.
+        /// </returns>
         public async Task<IEnumerable<Recipe>> FindRecipiesAsync(string[] ingredients)
         {
             var request = new StringBuilder(requestUri, 50);
@@ -52,6 +60,11 @@ namespace KitchenAid.App.DataAccess
             }
         }
 
+        /// <summary>Gets the recipe information asynchronous from the spoonacular api.</summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns>
+        ///   returns an object of Type Instruction, containing the instructions for the recipe.
+        /// </returns>
         public async Task<Instruction> GetRecipeInformationAsync(int id)
         {
             var requestUri = $"https://api.spoonacular.com/recipes/{id}/information?includeInstructions=true&&apiKey=429d6ef10f5b42c5866251adb3e9d796";
@@ -74,6 +87,11 @@ namespace KitchenAid.App.DataAccess
             }
         }
 
+        /// <summary>Adds the recipe asynchronous.</summary>
+        /// <param name="recipe">The recipe.</param>
+        /// <returns>
+        ///   A bool if it was successfull or not.
+        /// </returns>
         internal async Task<bool> AddRecipeAsync(Recipe recipe)
         {
             string json;
@@ -106,6 +124,10 @@ namespace KitchenAid.App.DataAccess
             }
         }
 
+        /// <summary>Gets the favorites asynchronous from the database.</summary>
+        /// <returns>
+        ///   An array of type Recipe.
+        /// </returns>
         internal async Task<IEnumerable<Recipe>> GetFavoritesAsync()
         {
             using (var _httpClient = new HttpClient())
@@ -126,6 +148,11 @@ namespace KitchenAid.App.DataAccess
             }
         }
 
+        /// <summary>Deletes the recipe asynchronous.</summary>
+        /// <param name="recipe">The recipe.</param>
+        /// <returns>
+        ///   A bool if it was successfull or not.
+        /// </returns>
         internal async Task<bool> DeleteRecipeAsync(Recipe recipe)
         {
             using (var _httpClient = new HttpClient())

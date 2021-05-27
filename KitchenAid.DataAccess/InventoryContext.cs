@@ -7,17 +7,30 @@ using System;
 
 namespace KitchenAid.DataAccess
 {
+    /// <summary>Sets the contexts for database access.</summary>
     public class InventoryContext : DbContext
     {
         // Inventory contexts
+        /// <summary>Gets or sets the storages.</summary>
+        /// <value>The storages.</value>
         public DbSet<Storage> Storages { get; set; }
+        /// <summary>Gets or sets the products.</summary>
+        /// <value>The products.</value>
         public DbSet<Product> Products { get; set; }
 
+        /// <summary>Gets or sets the storage products.</summary>
+        /// <value>The storage products.</value>
         public DbSet<StorageProduct> StorageProducts { get; set; }
+        /// <summary>Gets or sets the categories.</summary>
+        /// <value>The categories.</value>
         public DbSet<Category> Categories { get; set; }
 
         // Recipe contexts
+        /// <summary>Gets or sets the recipes.</summary>
+        /// <value>The recipes.</value>
         public DbSet<Recipe> Recipes { get; set; }
+        /// <summary>Gets or sets the ingredients.</summary>
+        /// <value>The ingredients.</value>
         public DbSet<Ingredient> Ingredients { get; set; }
 
 

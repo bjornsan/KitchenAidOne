@@ -14,6 +14,7 @@
         Margin="{StaticResource SmallLeftRightMargin}">
         <Pivot
             x:Name="Items">
+            <!-- The search tab in the recipe finder -->
             <PivotItem x:Uid="FindRecipe" Header="Find Recipe">
                 <Grid Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}">
 
@@ -24,7 +25,7 @@
 
                     <RelativePanel>
                         
-
+                    <!--Listing the avaiable ingredients to search on-->
                     <controls:AdaptiveGridView x:Name="lvSearchIngredients"
                                            ItemsSource="{x:Bind RecipeFinderViewModel.SearchIngredients}"                                          
                                            Margin="0, 20, 0, 0"
@@ -48,6 +49,7 @@
                         </controls:AdaptiveGridView.ItemTemplate>
                     </controls:AdaptiveGridView>
 
+                    <!-- Buttons for search and cancelation -->
                     <StackPanel Orientation="Horizontal" Grid.Row="2" RelativePanel.Below="lvSearchIngredients"
                                 HorizontalAlignment="Center" VerticalAlignment="Center">
                         
@@ -66,12 +68,15 @@
                 </Grid>
             </PivotItem>
 
+            <!-- The search results tab for the recipe finder -->
             <PivotItem x:Uid="SearchResults" Header="Search Results">
                 <Grid Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}">
 
                     <RelativePanel>
+                        <!-- The Add to favorites button -->
                         <AppBarButton x:Name="AddFavorite" Content="Add to favorite" Icon="SolidStar" Command="{x:Bind RecipeFinderViewModel.AddCommand}" CommandParameter="{Binding ElementName=lvSearchResults, Path=SelectedItem}" />
 
+                        <!-- Listing the found recipes-->
                         <ListView x:Name="lvSearchResults" ItemsSource="{x:Bind RecipeFinderViewModel.Recipes}" Margin="0,50,0,0" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWith="lvIngredients" SelectedItem="{x:Bind RecipeFinderViewModel.SelectedRecipe, Mode=TwoWay}">
                             <ListView.ItemTemplate>
                                 <DataTemplate x:DataType="model:Recipe">
@@ -90,6 +95,7 @@
                             </ListView.ItemTemplate>
                         </ListView>
 
+                        <!-- Listing ingredients for selected recipe -->
                         <ListView x:Name="lvIngredients" ItemsSource="{x:Bind RecipeFinderViewModel.Ingredients}" Margin="0,50,0,0" RelativePanel.AlignRightWithPanel="True">
                             <ListView.ItemTemplate>
                                 <DataTemplate x:DataType="model:Ingredient">
@@ -109,6 +115,7 @@
                             </ListView.ItemTemplate>
                         </ListView>
 
+                        <!-- Listing cooking instructions for the selected recipe -->
                         <ListView x:Name="lvInstructions" ItemsSource="{x:Bind RecipeFinderViewModel.Instructions}" Margin="0,50,0,0" RelativePanel.AlignRightWithPanel="True" RelativePanel.Below="lvIngredients">
                             <ListView.ItemTemplate>
                                 <DataTemplate x:DataType="x:String">
@@ -129,12 +136,15 @@
                 </Grid>
             </PivotItem>
 
+            <!-- The favorites tab for the recipe finder -->
             <PivotItem x:Uid="Favorites" Header="Favorites">
                 <Grid Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}">
 
                     <RelativePanel>
+                        <!-- The remove from favorites button -->
                         <AppBarButton x:Name="RemoveFavorite" Content="Remove from favorites" Icon="Delete" Command="{x:Bind RecipeFinderViewModel.DeleteCommand}" CommandParameter="{Binding ElementName=lvFavorites, Path=SelectedItem}" />
 
+                        <!-- Lists all recipes stored as favorites -->
                         <ListView x:Name="lvFavorites" ItemsSource="{x:Bind RecipeFinderViewModel.Favorites}" Margin="0,50,0,0" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWith="lvFavIngredients" SelectedItem="{x:Bind RecipeFinderViewModel.SelectedFavorite, Mode=TwoWay}">
                             <ListView.ItemTemplate>
                                 <DataTemplate x:DataType="model:Recipe">
@@ -153,6 +163,7 @@
                             </ListView.ItemTemplate>
                         </ListView>
 
+                        <!-- Lists ingredients for selected recipe-->
                         <ListView x:Name="lvFavIngredients" ItemsSource="{x:Bind RecipeFinderViewModel.Ingredients}" Margin="0,50,0,0" RelativePanel.AlignRightWithPanel="True">
                             <ListView.ItemTemplate>
                                 <DataTemplate x:DataType="model:Ingredient">
@@ -172,6 +183,7 @@
                             </ListView.ItemTemplate>
                         </ListView>
 
+                        <!-- Lists cooking instructions for selected recipe -->
                         <ListView x:Name="lvFavInstructions" ItemsSource="{x:Bind RecipeFinderViewModel.Instructions}" Margin="0,50,0,0" RelativePanel.AlignRightWithPanel="True" RelativePanel.Below="lvFavIngredients">
                             <ListView.ItemTemplate>
                                 <DataTemplate x:DataType="x:String">

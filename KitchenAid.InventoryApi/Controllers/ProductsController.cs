@@ -40,25 +40,6 @@ namespace KitchenAid.InventoryApi.Controllers
             return product;
         }
 
-        //// GET: api/Products/5
-        //[HttpGet("{id}/storageproduct")]
-        //public async Task<ActionResult<StorageProduct>> GetStorageProductForProduct(int id)
-        //{
-        //    var storageproducts = await (from p in _context.Products
-        //                               join sp in _context.StorageProducts on p.ProductId equals sp.ProductId
-        //                               where sp.ProductId == id
-        //                               select sp).ToListAsync();
-
-        //    var storageproduct = storageproducts.First();
-
-        //    if (storageproduct == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return storageproduct;
-        //}
-
         // PUT: api/Products/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.

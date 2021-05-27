@@ -11,6 +11,8 @@
     <Grid x:Name="ContentArea" Margin="{StaticResource MediumLeftRightMargin}">
         <Grid>
             <RelativePanel>
+
+                <!-- Buttons to add products to the shoppinglist, and to update the inventory -->
                 <ListView x:Name="lvAddProduct" RelativePanel.AlignLeftWithPanel="true">
                     <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
                         <Button x:Name="addProductBtn" Content="Add Product" Click="AddProductBtn_Click" />
@@ -18,6 +20,7 @@
                     </StackPanel>
                 </ListView>
 
+                <!-- This is not visible but nesecarry to list the products found in this storage. -->
                 <ListView x:Name="lvStorages" ItemsSource="{x:Bind ShoppingListViewModel.ShoppingLists}" RelativePanel.Below="lvAddProduct" Margin="0, 20, 0, 0" SelectedItem="{x:Bind ShoppingListViewModel.SelectedShoppingList, Mode=OneWay}" Visibility="Collapsed">
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="model:Storage">
@@ -28,7 +31,8 @@
                     </ListView.ItemTemplate>
                 </ListView>
 
-                <ListView x:Name="lvProducts" ItemsSource="{x:Bind ShoppingListViewModel.Products}" RelativePanel.AlignLeftWith="lvStorages" Margin="200, 20, 0, 0" SelectedItem="{x:Bind ShoppingListViewModel.SelectedProduct, Mode=TwoWay}">
+                <!-- Listing the products currently in the shoppinglist-->
+                <ListView x:Name="lvProducts" ItemsSource="{x:Bind ShoppingListViewModel.Products}" RelativePanel.AlignLeftWith="lvStorages" Margin="200, 20, 0, 0">
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="model:Product">
                             <StackPanel Orientation="Horizontal" Width="1000">
@@ -48,7 +52,7 @@
             </RelativePanel>
         </Grid>
 
-
+        <!-- The content dialog pop up, for registering a new product -->
         <ContentDialog x:Name="AddProductsDialog"
                                    PrimaryButtonText="Add products"
                                    SecondaryButtonText="Cancel"

@@ -7,20 +7,20 @@ using System.Threading.Tasks;
 
 namespace KitchenAid.App.DataAccess
 {
+    /// <summary>Data access for storageproducts.</summary>
     public class StorageProducts
     {
-        readonly HttpClient _httpClient = new HttpClient();
-        static readonly Uri baseUri = new Uri("http://localhost:36878/api/storageproducts");
+        /// <summary>The HTTP client</summary>
+        private readonly HttpClient _httpClient = new HttpClient();
+        /// <summary>The base URI</summary>
+        private readonly Uri baseUri = new Uri("http://localhost:36878/api/storageproducts");
 
 
-
-        internal async Task<StorageProduct> GetStorageProduct(int id)
-        {
-            HttpResponseMessage result = await _httpClient.GetAsync(new Uri(baseUri, $"storageproducts/{id}"));
-            string json = await result.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<StorageProduct>(json);
-        }
-
+        /// <summary>Adds the storage product asynchronous.</summary>
+        /// <param name="storageProduct">The storage product.</param>
+        /// <returns>
+        ///   A bool if it was successfull or not.
+        /// </returns>
         internal async Task<bool> AddStorageProductAsync(StorageProduct storageProduct)
         {
             string json = JsonConvert.SerializeObject(storageProduct);
@@ -37,12 +37,5 @@ namespace KitchenAid.App.DataAccess
             else
                 return false;
         }
-
-        internal async Task<bool> DeleteStorageProductAsync(StorageProduct storageProduct)
-        {
-            HttpResponseMessage result = await _httpClient.DeleteAsync(new Uri(baseUri, $"storagesproducts/{storageProduct}"));
-            return result.IsSuccessStatusCode;
-        }
-
     }
 }

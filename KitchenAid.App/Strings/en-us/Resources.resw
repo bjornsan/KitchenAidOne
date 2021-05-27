@@ -134,10 +134,10 @@
     <comment>Navigation view item name for Inventory</comment>
   </data>
   <data name="Shell_ShoppingList.Content" xml:space="preserve">
-    <value>ShoppingList</value>
+    <value>Shopping List</value>
     <comment>Navigation view item name for ShoppingList</comment>
   </data>
-  <data name="RecipeFinder_PivotItem1.Header" xml:space="preserve">  
+  <data name="RecipeFinder_PivotItem1.Header" xml:space="preserve">
     <value>Item 1</value>
     <comment>First Pivot item title for RecipeFinder</comment>
   </data>
@@ -146,7 +146,7 @@
     <comment>Second Pivot item title for RecipeFinder</comment>
   </data>
   <data name="Shell_RecipeFinder.Content" xml:space="preserve">
-    <value>RecipeFinder</value>
+    <value>Recipe Finder</value>
     <comment>Navigation view item name for RecipeFinder</comment>
   </data>
 </root>

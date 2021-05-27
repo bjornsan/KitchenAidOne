@@ -160,16 +160,11 @@
     <Compile Include="Services\NavigationService.cs" />
     <Compile Include="Services\UserNotification.cs" />
     <Compile Include="ViewModels\InventoryViewModel.cs" />
-    <Compile Include="ViewModels\MainViewModel.cs" />
-    <Compile Include="ViewModels\ProductViewModel.cs" />
     <Compile Include="ViewModels\RecipeFinderViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="ViewModels\ShoppingListViewModel.cs" />
     <Compile Include="Views\InventoryPage.xaml.cs">
       <DependentUpon>InventoryPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\MainPage.xaml.cs">
-      <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\RecipeFinderPage.xaml.cs">
       <DependentUpon>RecipeFinderPage.xaml</DependentUpon>
@@ -209,10 +204,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\InventoryPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

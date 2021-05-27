@@ -9,20 +9,38 @@ using System.Windows.Input;
 
 namespace KitchenAid.App.ViewModels
 {
+    /// <summary>View Model for the InventoryPage</summary>
     public class InventoryViewModel : Observable
     {
+        /// <summary>Gets or sets the delete storage command.</summary>
+        /// <value>The delete storage command.</value>
         public ICommand DeleteStorageCommand { get; set; }
+        /// <summary>Gets or sets the update product command.</summary>
+        /// <value>The update product command.</value>
         public ICommand UpdateProductCommand { get; set; }
+        /// <summary>Gets or sets the delete product command.</summary>
+        /// <value>The delete product command.</value>
         public ICommand DeleteProductCommand { get; set; }
+        /// <summary>Gets the storages.</summary>
+        /// <value>The storages.</value>
         public ObservableCollection<Storage> Storages { get; } = new ObservableCollection<Storage>();
+        /// <summary>Gets the products.
+        /// For a spesific storage.</summary>
+        /// <value>The products.</value>
         public ObservableCollection<Product> Products { get; } = new ObservableCollection<Product>();
 
+        /// <summary>The storage data access</summary>
         public Storages storageDataAccess = new Storages();
+        /// <summary>The product data access</summary>
         public Products productDataAccess = new Products();
+        /// <summary>The storage product data access</summary>
         public StorageProducts storageProductDataAccess = new StorageProducts();
 
+        /// <summary>The selected storage, from UI</summary>
         private Storage selectedStorage;
 
+        /// <summary>Gets or sets the selected storage.</summary>
+        /// <value>The selected storage.</value>
         public Storage SelectedStorage
         {
             get => selectedStorage;
@@ -35,8 +53,12 @@ namespace KitchenAid.App.ViewModels
             }
         }
 
+        /// <summary>The selected product
+        /// in a selected storage</summary>
         private Product selectedProduct;
 
+        /// <summary>Gets or sets the selected product.</summary>
+        /// <value>The selected product.</value>
         public Product SelectedProduct
         {
             get => selectedProduct;
@@ -46,6 +68,7 @@ namespace KitchenAid.App.ViewModels
             }
         }
 
+        /// <summary>Initializes a new instance of the <see cref="InventoryViewModel" /> class.</summary>
         public InventoryViewModel()
         {
             UpdateProductCommand = new RelayCommand<Product>(async product =>
@@ -59,9 +82,6 @@ namespace KitchenAid.App.ViewModels
 
             DeleteProductCommand = new RelayCommand<Product>(async param =>
             {
-                //var storageProduct = await productDataAccess.GetStorageProductForProductsAsync(((Product)param).ProductId);
-                //if (await storageProductDataAccess.DeleteStorageProductAsync(storageProduct))
-
                 if (await productDataAccess.DeleteProductAsync(param as Product))
                     Products.Remove(param);
             }, param => param != null);
@@ -74,6 +94,8 @@ namespace KitchenAid.App.ViewModels
         }
 
 
+        /// <summary>Loads the products for a spesific storage asynchronous.</summary>
+        /// <param name="storageId">The storage identifier.</param>
         internal async void LoadProductsForStorageAsync(int storageId)
         {
             var products = await storageDataAccess.GetProductsAsync(storageId);
@@ -85,7 +107,8 @@ namespace KitchenAid.App.ViewModels
             }
         }
 
-        public async Task LoadDataAsync()
+        /// <summary>Loads the storages asynchronous.</summary>
+        internal async Task LoadDataAsync()
         {
             var storages = await storageDataAccess.GetStoragesAsync();
 

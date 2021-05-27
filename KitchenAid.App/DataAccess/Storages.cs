@@ -7,11 +7,18 @@ using System.Threading.Tasks;
 
 namespace KitchenAid.App.DataAccess
 {
+    /// <summary>Data Access for storages.</summary>
     public class Storages
     {
+        /// <summary>The HTTP client</summary>
         readonly HttpClient _httpClient = new HttpClient();
+        /// <summary>The base URI</summary>
         static readonly Uri baseUri = new Uri("http://localhost:36878/api/storages");
 
+        /// <summary>Gets the storages asynchronous.</summary>
+        /// <returns>
+        ///   An array of Type Storage.
+        /// </returns>
         public async Task<Storage[]> GetStoragesAsync()
         {
             HttpResponseMessage result = await _httpClient.GetAsync(baseUri);
@@ -20,6 +27,11 @@ namespace KitchenAid.App.DataAccess
 
         }
 
+        /// <summary>Gets the products for a given storage asynchronous.</summary>
+        /// <param name="storageId">The storage identifier.</param>
+        /// <returns>
+        ///   An array of Type Product.
+        /// </returns>
         public async Task<Product[]> GetProductsAsync(int storageId)
         {
             HttpResponseMessage result = await _httpClient.GetAsync(new Uri(baseUri, $"storages/{storageId}/products"));
@@ -27,6 +39,11 @@ namespace KitchenAid.App.DataAccess
             return JsonConvert.DeserializeObject<Product[]>(json);
         }
 
+        /// <summary>Adds the storage asynchronous.</summary>
+        /// <param name="storage">The storage.</param>
+        /// <returns>
+        ///   A bool if it was successfull or not.
+        /// </returns>
         internal async Task<bool> AddStorageAsync(Storage storage)
         {
             string json = JsonConvert.SerializeObject(storage);
@@ -43,6 +60,15 @@ namespace KitchenAid.App.DataAccess
             else
                 return false;
         }
+
+        /// <summary>
+        /// Updates the storage asynchronous.
+        /// </summary>
+        /// <param name="storage">The storage.</param>
+        /// <returns>
+        /// A bool if it was successfull or not.
+        /// </returns>
+
 
         internal async Task<bool> UpdateStorageAsync(Storage storage)
         {
@@ -65,6 +91,11 @@ namespace KitchenAid.App.DataAccess
             return false;
         }
 
+        /// <summary>Deletes the storage asynchronous.</summary>
+        /// <param name="storage">The storage.</param>
+        /// <returns>
+        ///   A bool if it was successfull or not.
+        /// </returns>
         internal async Task<bool> DeleteStorageAsync(Storage storage)
         {
             HttpResponseMessage result = await _httpClient.DeleteAsync(new Uri(baseUri, $"storages/{storage.StorageId}"));
@@ -72,6 +103,10 @@ namespace KitchenAid.App.DataAccess
         }
 
 
+        /// <summary>Gets the main inventory asynchronous.</summary>
+        /// <returns>
+        ///   Storage
+        /// </returns>
         internal async Task<Storage> GetInventoryAsync()
         {
             int id = 1;

@@ -11,15 +11,13 @@
 
     <Grid x:Name="ContentArea" Margin="{StaticResource SmallLeftRightMargin}">
         <Grid>
-         
-          
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" MaxHeight="300"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
             <RelativePanel Grid.Row="0">
-
+                <!-- Contorls for adding a shopping list and removing a storage -->
                 <StackPanel x:Name="AddStorageBox" Orientation="Horizontal"
                             RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWith="storageCommands" RelativePanel.AlignTopWithPanel="True">
 
@@ -28,15 +26,13 @@
 
                 </StackPanel>
 
+                <!-- Controls for updating and deleting a product from a chosen storage -->
                 <CommandBar x:Name="storageCommands" RelativePanel.AlignRightWithPanel="True" Margin="0, 50, 0, 0">
-
-
                     <AppBarButton x:Name="Update" Content="Update Product" Icon="Add" Command="{x:Bind InventoryViewModel.UpdateProductCommand}" CommandParameter="{Binding ElementName=inventoryDataGrid, Path=SelectedItem}"/>
-
                     <AppBarButton  x:Name="Delete" Content="Delete Product" Icon="Delete" Command="{x:Bind InventoryViewModel.DeleteProductCommand}" CommandParameter="{Binding ElementName=inventoryDataGrid, Path=SelectedItem}"/>
                 </CommandBar>
 
-
+                <!-- Listing the available storages -->
                 <controls:AdaptiveGridView x:Name="lvStorages"
                                            ItemsSource="{x:Bind InventoryViewModel.Storages}"
                                            SelectedItem="{x:Bind InventoryViewModel.SelectedStorage, Mode=TwoWay}"
@@ -63,7 +59,7 @@
                 </controls:AdaptiveGridView>
             </RelativePanel>
 
-
+            <!-- Listing the products for the chosen storage -->
             <controls:DataGrid x:Name="inventoryDataGrid"
                                    RelativePanel.AlignLeftWith="lvStorages"
                                    Height="600"
@@ -92,11 +88,7 @@
                                    SelectionMode="Extended"
                                    RowGroupHeaderPropertyNameAlternative="Range"
                                    >
-
-
-                
             </controls:DataGrid>
-
         </Grid>
     </Grid>
 </Page>

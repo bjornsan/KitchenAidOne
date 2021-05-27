@@ -1,4 +1,5 @@
 ﻿
+using KitchenAid.App.Services;
 using KitchenAid.App.ViewModels;
 using System;
 using System.Threading;
@@ -9,8 +10,11 @@ namespace KitchenAid.App.Views
 {
     public sealed partial class RecipeFinderPage : Page
     {
+        /// <summary>Gets the recipe finder view model.</summary>
+        /// <value>The recipe finder view model.</value>
         public RecipeFinderViewModel RecipeFinderViewModel { get; } = new RecipeFinderViewModel();
 
+        /// <summary>The cancelation token</summary>
         private CancellationTokenSource cts;
 
         public RecipeFinderPage()
@@ -18,12 +22,20 @@ namespace KitchenAid.App.Views
             InitializeComponent();
         }
 
+        /// <summary>Invoked when the Page is loaded and becomes the current source of a parent Frame.
+        /// <br />Loads the favorites to the viewmodel.</summary>
+        /// <param name="e">
+        /// Event data that can be examined by overriding code. The event data is representative of the pending navigation that will load the current Page. Usually the most relevant property to examine is Parameter.
+        /// </param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             RecipeFinderViewModel.GetFavoritesAsync();
         }
 
-        // Handles the selection of
+
+        /// <summary>Handles the Click event of the FindRecipe control.</summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="Windows.UI.Xaml.RoutedEventArgs" /> instance containing the event data.</param>
         private async void FindRecipe_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
             var listviewItems = lvSearchIngredients.SelectedItems;
@@ -46,10 +58,15 @@ namespace KitchenAid.App.Views
             catch (OperationCanceledException ex)
             {
                 RecipeFinderViewModel.SearchCanceled();
-                // log error
+                var logger = new ErrorLogger();
+                logger.WriteToFile(ex.Message);
             }
         }
 
+        /// <summary>Handles the Click event of the CancelBtn control.
+        /// <br />Invoked when the search command is cancelled.</summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="Windows.UI.Xaml.RoutedEventArgs" /> instance containing the event data.</param>
         private void CancelBtn_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
             cts.Cancel();
