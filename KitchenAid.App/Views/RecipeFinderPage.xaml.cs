@@ -2,7 +2,6 @@
 using KitchenAid.App.ViewModels;
 using System;
 using System.Threading;
-using Windows.UI.Popups;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 
@@ -39,15 +38,15 @@ namespace KitchenAid.App.Views
             }
 
             cts = new CancellationTokenSource();
-         
+
             try
             {
                 await RecipeFinderViewModel.FindRecipesAsync(cts, selectedIngredients);
             }
-            catch (OperationCanceledException ex) 
+            catch (OperationCanceledException ex)
             {
                 RecipeFinderViewModel.SearchCanceled();
-                 // log error
+                // log error
             }
         }
 

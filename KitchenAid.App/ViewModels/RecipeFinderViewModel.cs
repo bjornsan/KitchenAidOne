@@ -8,7 +8,6 @@ using System.Collections.ObjectModel;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Windows.UI.Popups;
 
 namespace KitchenAid.App.ViewModels
 {
@@ -94,7 +93,7 @@ namespace KitchenAid.App.ViewModels
                 catch
                 {
                     UserNotification.NotifyUser("Failed to add Recipe");
-                }               
+                }
             });
 
             DeleteCommand = new RelayCommand<Recipe>(async param =>
@@ -127,7 +126,7 @@ namespace KitchenAid.App.ViewModels
             {
                 UserNotification.NotifyUser("Could not load recipes, try again");
             }
-    
+
             if (recipes != null)
             {
                 Recipes.Clear();
@@ -137,7 +136,7 @@ namespace KitchenAid.App.ViewModels
             }
 
             cts.Token.ThrowIfCancellationRequested();
-     
+
         }
 
 

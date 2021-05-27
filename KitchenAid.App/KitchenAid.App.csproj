@@ -156,6 +156,7 @@
     <Compile Include="Helpers\RelayCommand.cs" />
     <Compile Include="Services\ActivationService.cs" />
     <Compile Include="Activation\DefaultActivationHandler.cs" />
+    <Compile Include="Services\ErrorLogger.cs" />
     <Compile Include="Services\NavigationService.cs" />
     <Compile Include="Services\UserNotification.cs" />
     <Compile Include="ViewModels\InventoryViewModel.cs" />

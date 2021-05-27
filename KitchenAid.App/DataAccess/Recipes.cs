@@ -1,10 +1,10 @@
-﻿using KitchenAid.Model.Recipes;
+﻿using KitchenAid.App.Services;
+using KitchenAid.Model.Recipes;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace KitchenAid.App.DataAccess
@@ -43,9 +43,10 @@ namespace KitchenAid.App.DataAccess
                     Recipe[] recipes = JsonConvert.DeserializeObject<Recipe[]>(json);
                     return recipes;
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
-                    // log exception
+                    var logger = new ErrorLogger();
+                    logger.WriteToFile(ex.Message);
                     throw;
                 }
             }
@@ -64,9 +65,10 @@ namespace KitchenAid.App.DataAccess
                     Instruction instructions = JsonConvert.DeserializeObject<Instruction>(json);
                     return instructions;
                 }
-                catch
+                catch (Exception ex)
                 {
-                    // log exception
+                    var logger = new ErrorLogger();
+                    logger.WriteToFile(ex.Message);
                     throw;
                 }
             }
@@ -86,7 +88,8 @@ namespace KitchenAid.App.DataAccess
                 }
                 catch (Exception ex)
                 {
-                    //log exception
+                    var logger = new ErrorLogger();
+                    logger.WriteToFile(ex.Message);
                     throw;
                 }
 
@@ -116,7 +119,8 @@ namespace KitchenAid.App.DataAccess
                 }
                 catch (Exception ex)
                 {
-                    // log exception
+                    var logger = new ErrorLogger();
+                    logger.WriteToFile(ex.Message);
                     throw;
                 }
             }
@@ -133,7 +137,8 @@ namespace KitchenAid.App.DataAccess
                 }
                 catch (Exception ex)
                 {
-                    // log exception
+                    var logger = new ErrorLogger();
+                    logger.WriteToFile(ex.Message);
                     throw;
                 }
             }

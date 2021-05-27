@@ -26,13 +26,5 @@ namespace KitchenAid.App.Views
         {
             NavigationService.Navigate<ShoppingListPage>();
         }
-
-
-        //private void UpdateList_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
-        //{
-        //    var storageToUpdate = InventoryViewModel.SelectedStorage;
-        //    InventoryViewModel.SelectedStorage.KindOfStorage = Model.Inventory.KindOfStorage.Fridge;
-        //    InventoryViewModel.UpdateCommand.Execute(storageToUpdate);
-        //}
     }
 }

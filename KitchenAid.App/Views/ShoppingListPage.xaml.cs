@@ -2,9 +2,7 @@
 using KitchenAid.App.Services;
 using KitchenAid.App.ViewModels;
 using KitchenAid.Model.Inventory;
-using Microsoft.Toolkit.Uwp.Notifications;
 using System;
-using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -28,8 +26,11 @@ namespace KitchenAid.App.Views
                 ShoppingListViewModel.GetCategoriesAsync();
                 ShoppingListViewModel.GetAllProductsAsync();
             }
-            catch
+            catch (Exception ex)
             {
+                var logger = new ErrorLogger();
+                logger.WriteToFile(ex.Message);
+
                 UserNotification.NotifyUser("Failed to load shoppinglist properly");
             }
         }
@@ -45,12 +46,7 @@ namespace KitchenAid.App.Views
             foreach (var product in ShoppingListViewModel.Products)
                 ShoppingListViewModel.UpdateInventoryAsync(ShoppingListViewModel.GetShoppingList(), product);
 
-            new ToastContentBuilder()
-                .SetToastScenario(ToastScenario.Reminder)
-                .AddArgument("action", "viewEvent")
-                .AddArgument("eventId", 1983)
-                .AddText($"{ShoppingListViewModel.Products.Count} products added to inventory.")
-                .Show();
+            UserNotification.NotifyUser($"{ShoppingListViewModel.Products.Count} products added to inventory.");
 
             NavigationService.Navigate<InventoryPage>();
         }

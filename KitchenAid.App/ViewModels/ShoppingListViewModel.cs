@@ -83,7 +83,7 @@ namespace KitchenAid.App.ViewModels
         {
             var shoppingList = new Storage { CreatedOn = DateTime.Now, KindOfStorage = KindOfStorage.ShoppingList };
             ShoppingLists.Add(shoppingList);
-       
+
             AddStorageAsync(shoppingList);
         }
 
