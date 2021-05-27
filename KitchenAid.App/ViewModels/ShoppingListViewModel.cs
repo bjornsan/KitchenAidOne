@@ -14,7 +14,7 @@ namespace KitchenAid.App.ViewModels
     /// <summary>View Model for the shopping list page</summary>
     public class ShoppingListViewModel : Observable
     {
-        
+
         /// <summary>Gets or sets the add product command.</summary>
         /// <value>The add product command.</value>
         public ICommand AddProductCommand { get; set; }

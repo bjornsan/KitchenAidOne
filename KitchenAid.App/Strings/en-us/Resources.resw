@@ -125,10 +125,6 @@
     <value>KitchenAid.App</value>
     <comment>Application description</comment>
   </data>
-  <data name="Shell_Main.Content" xml:space="preserve">
-    <value>Main</value>
-    <comment>Navigation view item name for Main</comment>
-  </data>
   <data name="Shell_Inventory.Content" xml:space="preserve">
     <value>Inventory</value>
     <comment>Navigation view item name for Inventory</comment>
