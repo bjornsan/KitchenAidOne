@@ -3,6 +3,7 @@ using KitchenAid.App.Helpers;
 using KitchenAid.Model.Inventory;
 using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
@@ -10,13 +11,15 @@ namespace KitchenAid.App.ViewModels
 {
     public class InventoryViewModel : Observable
     {
-        public ICommand AddCommand { get; set; }
-        public ICommand UpdateCommand { get; set; }
-        public ICommand DeleteCommand { get; set; }
+        public ICommand DeleteStorageCommand { get; set; }
+        public ICommand UpdateProductCommand { get; set; }
+        public ICommand DeleteProductCommand { get; set; }
         public ObservableCollection<Storage> Storages { get; } = new ObservableCollection<Storage>();
         public ObservableCollection<Product> Products { get; } = new ObservableCollection<Product>();
 
         public Storages storageDataAccess = new Storages();
+        public Products productDataAccess = new Products();
+        public StorageProducts storageProductDataAccess = new StorageProducts();
 
         private Storage selectedStorage;
 
@@ -32,33 +35,41 @@ namespace KitchenAid.App.ViewModels
             }
         }
 
+        private Product selectedProduct;
+
+        public Product SelectedProduct
+        {
+            get => selectedProduct;
+            set
+            {
+                Set(ref selectedProduct, value);
+            }
+        }
+
         public InventoryViewModel()
         {
-            AddCommand = new RelayCommand<Storage>(async storage =>
+            UpdateProductCommand = new RelayCommand<Product>(async product =>
             {
-                if (storage == null)
+                if (await productDataAccess.UpdateProductAsync(product))
                 {
-                    storage = new Storage() { CreatedOn = DateTime.Now, KindOfStorage = KindOfStorage.Fridge };
-                }
-
-
-                if (await storageDataAccess.AddStorageAsync(storage))
-                    Storages.Add(storage);
-            });
-
-            UpdateCommand = new RelayCommand<Storage>(async storage =>
-            {
-                if (await storageDataAccess.UpdateStorageAsync(storage))
-                {
-                    Storages.Clear();
-                    await LoadDataAsync();
+                    Products.Clear();
+                    LoadProductsForStorageAsync(Storages.First().StorageId);
                 }
             });
 
-            DeleteCommand = new RelayCommand<Storage>(async param =>
+            DeleteProductCommand = new RelayCommand<Product>(async param =>
             {
-                if (await storageDataAccess.DeleteStorageAsync((Storage)param))
-                    Storages.Remove(param);
+                //var storageProduct = await productDataAccess.GetStorageProductForProductsAsync(((Product)param).ProductId);
+                //if (await storageProductDataAccess.DeleteStorageProductAsync(storageProduct))
+
+                if (await productDataAccess.DeleteProductAsync(param as Product))
+                    Products.Remove(param);
+            }, param => param != null);
+
+            DeleteStorageCommand = new RelayCommand<Storage>(async storage =>
+            {
+                if (await storageDataAccess.DeleteStorageAsync(storage))
+                    Storages.Remove(storage);
             }, param => param != null);
         }
 

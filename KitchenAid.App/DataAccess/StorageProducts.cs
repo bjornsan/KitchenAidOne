@@ -12,6 +12,15 @@ namespace KitchenAid.App.DataAccess
         readonly HttpClient _httpClient = new HttpClient();
         static readonly Uri baseUri = new Uri("http://localhost:36878/api/storageproducts");
 
+
+
+        internal async Task<StorageProduct> GetStorageProduct(int id)
+        {
+            HttpResponseMessage result = await _httpClient.GetAsync(new Uri(baseUri, $"storageproducts/{id}"));
+            string json = await result.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<StorageProduct>(json);
+        }
+
         internal async Task<bool> AddStorageProductAsync(StorageProduct storageProduct)
         {
             string json = JsonConvert.SerializeObject(storageProduct);
@@ -28,5 +37,12 @@ namespace KitchenAid.App.DataAccess
             else
                 return false;
         }
+
+        internal async Task<bool> DeleteStorageProductAsync(StorageProduct storageProduct)
+        {
+            HttpResponseMessage result = await _httpClient.DeleteAsync(new Uri(baseUri, $"storagesproducts/{storageProduct}"));
+            return result.IsSuccessStatusCode;
+        }
+
     }
 }

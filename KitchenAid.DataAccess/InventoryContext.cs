@@ -19,7 +19,6 @@ namespace KitchenAid.DataAccess
         // Recipe contexts
         public DbSet<Recipe> Recipes { get; set; }
         public DbSet<Ingredient> Ingredients { get; set; }
-        public DbSet<Instruction> Instructions { get; set; }
 
 
         public InventoryContext() { }
@@ -55,7 +54,7 @@ namespace KitchenAid.DataAccess
                  .HasOne(sp => sp.Product)
                  .WithMany(p => p.Storages)
                  .HasForeignKey(sp => sp.ProductId);
-        
+
 
             // Seeding mockup data to the database.
 
@@ -70,7 +69,7 @@ namespace KitchenAid.DataAccess
             modelBuilder.Entity<Category>().HasData(new Category { CategoryId = 8, Name = "Pasta", Description = "All kind of pasta" });
             modelBuilder.Entity<Category>().HasData(new Category { CategoryId = 9, Name = "Sweets", Description = "All sorts of sweets" });
             modelBuilder.Entity<Category>().HasData(new Category { CategoryId = 10, Name = "Cleaning", Description = "Cleaning products" });
-        
+
             // Main inventory
             modelBuilder.Entity<Storage>().HasData(new Storage { StorageId = 1, CreatedOn = DateTime.Now, KindOfStorage = KindOfStorage.MainInventory });
 

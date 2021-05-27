@@ -1,9 +1,9 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
+using System;
 
 namespace KitchenAid.DataAccess.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class FinalMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -19,6 +19,22 @@ namespace KitchenAid.DataAccess.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Categories", x => x.CategoryId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Ingredients",
+                columns: table => new
+                {
+                    IngredientId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(nullable: true),
+                    Amount = table.Column<double>(nullable: false),
+                    Unit = table.Column<string>(nullable: true),
+                    RecipeId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Ingredients", x => x.IngredientId);
                 });
 
             migrationBuilder.CreateTable(
@@ -75,50 +91,6 @@ namespace KitchenAid.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Ingredients",
-                columns: table => new
-                {
-                    IngredientId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(nullable: true),
-                    Amount = table.Column<double>(nullable: false),
-                    Unit = table.Column<string>(nullable: true),
-                    RecipeId = table.Column<int>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Ingredients", x => x.IngredientId);
-                    table.ForeignKey(
-                        name: "FK_Ingredients_Recipes_RecipeId",
-                        column: x => x.RecipeId,
-                        principalTable: "Recipes",
-                        principalColumn: "RecipeId",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Instructions",
-                columns: table => new
-                {
-                    InstructionId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Servings = table.Column<int>(nullable: false),
-                    ReadyInMinutes = table.Column<int>(nullable: false),
-                    Instructions = table.Column<string>(nullable: true),
-                    RecipeId = table.Column<int>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Instructions", x => x.InstructionId);
-                    table.ForeignKey(
-                        name: "FK_Instructions_Recipes_RecipeId",
-                        column: x => x.RecipeId,
-                        principalTable: "Recipes",
-                        principalColumn: "RecipeId",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "StorageProducts",
                 columns: table => new
                 {
@@ -162,7 +134,7 @@ namespace KitchenAid.DataAccess.Migrations
             migrationBuilder.InsertData(
                 table: "Storages",
                 columns: new[] { "StorageId", "CreatedOn", "KindOfStorage" },
-                values: new object[] { 1, new DateTime(2021, 5, 24, 16, 25, 2, 310, DateTimeKind.Local).AddTicks(8649), 0 });
+                values: new object[] { 1, new DateTime(2021, 5, 27, 11, 50, 6, 806, DateTimeKind.Local).AddTicks(799), 0 });
 
             migrationBuilder.InsertData(
                 table: "Products",
@@ -197,16 +169,6 @@ namespace KitchenAid.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Ingredients_RecipeId",
-                table: "Ingredients",
-                column: "RecipeId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Instructions_RecipeId",
-                table: "Instructions",
-                column: "RecipeId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Products_CategoryId",
                 table: "Products",
                 column: "CategoryId");
@@ -223,13 +185,10 @@ namespace KitchenAid.DataAccess.Migrations
                 name: "Ingredients");
 
             migrationBuilder.DropTable(
-                name: "Instructions");
+                name: "Recipes");
 
             migrationBuilder.DropTable(
                 name: "StorageProducts");
-
-            migrationBuilder.DropTable(
-                name: "Recipes");
 
             migrationBuilder.DropTable(
                 name: "Products");

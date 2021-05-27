@@ -146,6 +146,7 @@
     <Compile Include="Behaviors\NavigationViewHeaderBehavior.cs" />
     <Compile Include="Behaviors\NavigationViewHeaderMode.cs" />
     <Compile Include="DataAccess\Categories.cs" />
+    <Compile Include="DataAccess\Ingredients.cs" />
     <Compile Include="DataAccess\Products.cs" />
     <Compile Include="DataAccess\Recipes.cs" />
     <Compile Include="DataAccess\StorageProducts.cs" />
@@ -156,8 +157,10 @@
     <Compile Include="Services\ActivationService.cs" />
     <Compile Include="Activation\DefaultActivationHandler.cs" />
     <Compile Include="Services\NavigationService.cs" />
+    <Compile Include="Services\UserNotification.cs" />
     <Compile Include="ViewModels\InventoryViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\ProductViewModel.cs" />
     <Compile Include="ViewModels\RecipeFinderViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="ViewModels\ShoppingListViewModel.cs" />

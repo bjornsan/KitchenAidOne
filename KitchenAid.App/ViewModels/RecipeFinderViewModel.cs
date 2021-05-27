@@ -1,12 +1,14 @@
-﻿
-using KitchenAid.App.DataAccess;
+﻿using KitchenAid.App.DataAccess;
 using KitchenAid.App.Helpers;
+using KitchenAid.App.Services;
 using KitchenAid.Model.Recipes;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Windows.UI.Popups;
 
 namespace KitchenAid.App.ViewModels
 {
@@ -23,10 +25,11 @@ namespace KitchenAid.App.ViewModels
             "tomato", "paprika", "pepper", "cucumber", "chili", "corn", "beans", "pasta", "rice", "fish", "pork", "ox", "deer", "chicken", "cheese", "milk",
             "yoghurt", "onion"
         };
-        
 
+        private int alreadyCalled = 0;
 
         private readonly Recipes recipeDataAccess = new Recipes();
+        private readonly Ingredients ingredientDataAccess = new Ingredients();
 
         private Recipe selectedRecipe;
 
@@ -38,7 +41,7 @@ namespace KitchenAid.App.ViewModels
                 Set(ref selectedRecipe, value);
 
                 if (value != null)
-                    GetRecipeInformationAsync(((Recipe)value).Id);
+                    GetRecipeInformationAsync(((Recipe)value).Id, selectedRecipe, 0);
 
             }
         }
@@ -51,6 +54,9 @@ namespace KitchenAid.App.ViewModels
             set
             {
                 Set(ref selectedFavorite, value);
+
+                if (value != null)
+                    GetRecipeInformationAsync(((Recipe)value).Id, selectedFavorite, 1);
             }
         }
 
@@ -59,88 +65,177 @@ namespace KitchenAid.App.ViewModels
         {
             AddCommand = new RelayCommand<Recipe>(async recipe =>
             {
+
                 if (recipe == null)
                 {
-                    // TODO: LOG? MAYBE DO SOME OTHER STUFF. FIX ME.
-                    Console.WriteLine("NOT FOUND");
+                    UserNotification.NotifyUser("Recipe not found");
                 }
 
-                if (await recipeDataAccess.AddRecipeAsync(recipe))
-                    Favorites.Add(recipe);
+                try
+                {
+                    if (await recipeDataAccess.AddRecipeAsync(recipe))
+                    {
+                        foreach (Ingredient ingredient in Ingredients)
+                        {
+                            var newIngredient = new Ingredient()
+                            {
+                                Name = ingredient.Name,
+                                Amount = ingredient.Amount,
+                                Unit = ingredient.Unit,
+                                IngredientId = ingredient.IngredientId,
+                                RecipeId = recipe.Id
+                            };
+
+                            await ingredientDataAccess.AddIngredientAsync(newIngredient);
+                        }
+                        Favorites.Add(recipe);
+                    }
+                }
+                catch
+                {
+                    UserNotification.NotifyUser("Failed to add Recipe");
+                }               
             });
 
             DeleteCommand = new RelayCommand<Recipe>(async param =>
             {
-                if (await recipeDataAccess.DeleteRecipeAsync((Recipe)param))
-                    Favorites.Remove(param);
+                try
+                {
+                    if (await recipeDataAccess.DeleteRecipeAsync((Recipe)param))
+                        Favorites.Remove(param);
+                }
+                catch
+                {
+                    UserNotification.NotifyUser("Failed to delete recipe.");
+                }
+
             }, param => param != null);
 
         }
 
-        public async void FindRecipes(string[] ingredients = null)
+        public async Task FindRecipesAsync(CancellationTokenSource cts, string[] ingredients = null)
         {
             if (ingredients == null)
-                ingredients = new string[]{ "tomato", "pasta", "chicken" };
+                ingredients = new string[] { "tomato", "pasta", "chicken" };
 
-            var recipes = await recipeDataAccess.FindRecipiesAsync(ingredients);
+            IEnumerable<Recipe> recipes = null; ;
+            try
+            {
+                recipes = await recipeDataAccess.FindRecipiesAsync(ingredients);
+            }
+            catch
+            {
+                UserNotification.NotifyUser("Could not load recipes, try again");
+            }
+    
+            if (recipes != null)
+            {
+                Recipes.Clear();
 
-            Recipes.Clear();
+                foreach (var recipe in recipes)
+                    Recipes.Add(recipe);
+            }
 
-            foreach (var recipe in recipes)
-                Recipes.Add(recipe);
+            cts.Token.ThrowIfCancellationRequested();
+     
         }
 
-        public void GetRecipeInformationAsync(int id)
+
+        // Token: 0 = selectedRecipe, 1 = selectedFavorite
+        // Mega bug, when awaiting ingredients in the if block where token = 1, it jumps back to the beginning of the method and
+        // excecutes the method once more, thus resulting in that the ingredients are loaded twice.
+        public async void GetRecipeInformationAsync(int id, Recipe selectedRecipe, int token)
         {
-            if (id < 0)
-                return;
 
-            GetInstructionsAsync(id);
+            if (id > 0)
+            {
+                if (alreadyCalled == 2)
+                    alreadyCalled = 0;
 
-            Ingredients.Clear();
+                Ingredients.Clear();
+                Instructions.Clear();
 
-            foreach (var ingredient in SelectedRecipe.MissedIngredients)
-                Ingredients.Add(ingredient);
+                GetInstructionsAsync(id);
 
-            foreach (var uingredient in SelectedRecipe.UsedIngredients)
-                Ingredients.Add(uingredient);
+                if (token == 0)
+                {
+                    foreach (var ingredient in selectedRecipe.MissedIngredients)
+                        Ingredients.Add(ingredient);
 
+                    foreach (var uingredient in selectedRecipe.UsedIngredients)
+                        Ingredients.Add(uingredient);
+                }
+                else if (token == 1)
+                {
+                    alreadyCalled++;
+                    if (alreadyCalled == 1)
+                    {
+                        var ingredients = await ingredientDataAccess.GetIngredientsForRecipeAsync(id);
+
+                        foreach (var ingredient in ingredients)
+                            Ingredients.Add(ingredient);
+
+                    }
+                }
+            }
         }
 
         public async void GetInstructionsAsync(int id)
         {
             Instructions.Clear();
 
-            var instructions = await recipeDataAccess.GetRecipeInformationAsync(id);
-
-            if (instructions.Instructions != null)
+            try
             {
-                string instructionsReformatted = instructions.Instructions.Replace("<p>", "");
-                string[] instructionSteps = instructionsReformatted.Split("</p>");
+                var instruction = await recipeDataAccess.GetRecipeInformationAsync(id);
 
-                foreach (var sub in instructionSteps)
+                if (instruction != null && instruction.Instructions != null)
                 {
-                    var trimmed = sub.Trim();
+                    string instructionsReformatted = instruction.Instructions.Replace("<p>", "");
+                    string[] instructionSteps = instructionsReformatted.Split("</p>");
 
-                    if (!string.IsNullOrEmpty(trimmed))
-                        Instructions.Add(trimmed);
+                    foreach (var sub in instructionSteps)
+                    {
+                        var trimmed = sub.Trim();
+
+                        if (!string.IsNullOrEmpty(trimmed))
+                            Instructions.Add(trimmed);
+                    }
                 }
-
             }
-
+            catch
+            {
+                UserNotification.NotifyUser("Could not load instructions");
+            }
         }
 
         public async void GetFavoritesAsync()
         {
-            var favorites = await recipeDataAccess.GetFavoritesAsync();
-
-            if (favorites != null)
+            try
             {
-                foreach (Recipe recipe in favorites)
+                var favorites = await recipeDataAccess.GetFavoritesAsync();
+
+                if (favorites != null)
                 {
-                    Favorites.Add(recipe);
+                    foreach (Recipe recipe in favorites)
+                    {
+                        Favorites.Add(recipe);
+                    }
                 }
             }
+            catch
+            {
+                UserNotification.NotifyUser("Faild to load favoirtes.");
+            }
+
+        }
+
+        public void SearchCanceled()
+        {
+            Recipes.Clear();
+            Instructions.Clear();
+            Ingredients.Clear();
+
+            UserNotification.NotifyUser("Search for recipes was cancelled");
         }
     }
 }

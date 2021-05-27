@@ -310,7 +310,7 @@ namespace KitchenAid.DataAccess.Migrations
                         new
                         {
                             StorageId = 1,
-                            CreatedOn = new DateTime(2021, 5, 24, 16, 25, 2, 310, DateTimeKind.Local).AddTicks(8649),
+                            CreatedOn = new DateTime(2021, 5, 27, 11, 50, 6, 806, DateTimeKind.Local).AddTicks(799),
                             KindOfStorage = 0
                         });
                 });
@@ -328,7 +328,7 @@ namespace KitchenAid.DataAccess.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("RecipeId")
+                    b.Property<int>("RecipeId")
                         .HasColumnType("int");
 
                     b.Property<string>("Unit")
@@ -336,35 +336,7 @@ namespace KitchenAid.DataAccess.Migrations
 
                     b.HasKey("IngredientId");
 
-                    b.HasIndex("RecipeId");
-
                     b.ToTable("Ingredients");
-                });
-
-            modelBuilder.Entity("KitchenAid.Model.Recipes.Instruction", b =>
-                {
-                    b.Property<int>("InstructionId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Instructions")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ReadyInMinutes")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("RecipeId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Servings")
-                        .HasColumnType("int");
-
-                    b.HasKey("InstructionId");
-
-                    b.HasIndex("RecipeId");
-
-                    b.ToTable("Instructions");
                 });
 
             modelBuilder.Entity("KitchenAid.Model.Recipes.Recipe", b =>
@@ -410,20 +382,6 @@ namespace KitchenAid.DataAccess.Migrations
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("KitchenAid.Model.Recipes.Ingredient", b =>
-                {
-                    b.HasOne("KitchenAid.Model.Recipes.Recipe", "Recipe")
-                        .WithMany()
-                        .HasForeignKey("RecipeId");
-                });
-
-            modelBuilder.Entity("KitchenAid.Model.Recipes.Instruction", b =>
-                {
-                    b.HasOne("KitchenAid.Model.Recipes.Recipe", "Recipe")
-                        .WithMany()
-                        .HasForeignKey("RecipeId");
                 });
 #pragma warning restore 612, 618
         }

@@ -8,8 +8,11 @@
     xmlns:model_inventory="using:KitchenAid.Model.Inventory"
     Style="{StaticResource PageStyle}"
     mc:Ignorable="d">
+
     <Grid x:Name="ContentArea" Margin="{StaticResource SmallLeftRightMargin}">
         <Grid>
+         
+          
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" MaxHeight="300"/>
                 <RowDefinition Height="*"/>
@@ -20,15 +23,17 @@
                 <StackPanel x:Name="AddStorageBox" Orientation="Horizontal"
                             RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWith="storageCommands" RelativePanel.AlignTopWithPanel="True">
 
-                    <Button x:Name="NewShoppingListBtn" Content="New Shopping List" Click="NewShoppingListBtn_Click" />
-                    <Button x:Name="UpdateList" Content="Update selected list" Click="UpdateList_Click" Margin="20, 0, 0, 0"/>
+                   <Button x:Name="NewShoppingListBtn" Content="New Shopping List" Click="NewShoppingListBtn_Click" />
+                   <AppBarButton x:Name="DeleteStorage" Content="Delete Storage" Icon="Delete" Command="{x:Bind InventoryViewModel.DeleteStorageCommand}" CommandParameter="{Binding ElementName=lvStorages, Path=SelectedItem}"/>
+
                 </StackPanel>
 
                 <CommandBar x:Name="storageCommands" RelativePanel.AlignRightWithPanel="True" Margin="0, 50, 0, 0">
 
-                    <AppBarButton x:Name="Add" Content="Add Product" Icon="Add" Command="{x:Bind InventoryViewModel.AddCommand}" />
 
-                    <AppBarButton  x:Name="Delete" Content="Delete Product" Icon="Cancel" Command="{x:Bind InventoryViewModel.DeleteCommand}" CommandParameter="{Binding ElementName=lvStorages, Path=SelectedItem}"/>
+                    <AppBarButton x:Name="Update" Content="Update Product" Icon="Add" Command="{x:Bind InventoryViewModel.UpdateProductCommand}" CommandParameter="{Binding ElementName=inventoryDataGrid, Path=SelectedItem}"/>
+
+                    <AppBarButton  x:Name="Delete" Content="Delete Product" Icon="Delete" Command="{x:Bind InventoryViewModel.DeleteProductCommand}" CommandParameter="{Binding ElementName=inventoryDataGrid, Path=SelectedItem}"/>
                 </CommandBar>
 
 
@@ -59,22 +64,22 @@
             </RelativePanel>
 
 
-            <controls:DataGrid x:Name="dataGrid1"
+            <controls:DataGrid x:Name="inventoryDataGrid"
                                    RelativePanel.AlignLeftWith="lvStorages"
                                    Height="600"
                                    Margin="12"
                                    Grid.Row="1"                             
                                    ItemsSource="{x:Bind InventoryViewModel.Products}"
-
+                                   SelectedItem="{x:Bind InventoryViewModel.SelectedProduct, Mode=TwoWay}"
                                    VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
                                    HorizontalScrollBarVisibility="Visible"
                                    VerticalScrollBarVisibility="Visible"
                                    AlternatingRowBackground="Transparent"
                                    AlternatingRowForeground="Gray"
                                    AreRowDetailsFrozen="False"
-                                   AreRowGroupHeadersFrozen="True"
-                                   AutoGenerateColumns="True"
-                                   CanUserSortColumns="False"
+                                   AreRowGroupHeadersFrozen="True"                            
+                                   AutoGenerateColumns="True"                            
+                                   CanUserSortColumns="True"                              
                                    CanUserReorderColumns="True"
                                    CanUserResizeColumns="True"
                                    ColumnHeaderHeight="32"
@@ -85,7 +90,12 @@
                                    IsReadOnly="False"
                                    RowDetailsVisibilityMode="Collapsed"
                                    SelectionMode="Extended"
-                                   RowGroupHeaderPropertyNameAlternative="Range"/>
+                                   RowGroupHeaderPropertyNameAlternative="Range"
+                                   >
+
+
+                
+            </controls:DataGrid>
 
         </Grid>
     </Grid>

@@ -19,7 +19,7 @@ namespace KitchenAid.Model.Inventory
         public int StorageId { get; set; }
         [Required]
         public DateTime CreatedOn { get; set; }
-
+        [Required]
         public KindOfStorage KindOfStorage { get; set; }
 
 

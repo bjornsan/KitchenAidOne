@@ -28,11 +28,11 @@ namespace KitchenAid.App.Views
         }
 
 
-        private void UpdateList_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
-        {
-            var storageToUpdate = InventoryViewModel.SelectedStorage;
-            InventoryViewModel.SelectedStorage.KindOfStorage = Model.Inventory.KindOfStorage.Fridge;
-            InventoryViewModel.UpdateCommand.Execute(storageToUpdate);
-        }
+        //private void UpdateList_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        //{
+        //    var storageToUpdate = InventoryViewModel.SelectedStorage;
+        //    InventoryViewModel.SelectedStorage.KindOfStorage = Model.Inventory.KindOfStorage.Fridge;
+        //    InventoryViewModel.UpdateCommand.Execute(storageToUpdate);
+        //}
     }
 }

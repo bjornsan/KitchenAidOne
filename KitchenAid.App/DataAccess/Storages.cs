@@ -53,9 +53,9 @@ namespace KitchenAid.App.DataAccess
 
                 if (result.IsSuccessStatusCode)
                 {
-                    //json = await result.Content.ReadAsStringAsync();
-                    // var returnedStorage = JsonConvert.DeserializeObject<Storage>(json);
-                    // storage.StorageId = returnedStorage.StorageId;
+                    json = await result.Content.ReadAsStringAsync();
+                    var returnedStorage = JsonConvert.DeserializeObject<Storage>(json);
+                    storage.StorageId = returnedStorage.StorageId;
                     return true;
                 }
                 else

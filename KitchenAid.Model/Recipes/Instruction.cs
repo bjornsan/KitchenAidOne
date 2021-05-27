@@ -12,6 +12,6 @@ namespace KitchenAid.Model.Recipes
         public string Instructions { get; set; }
 
         public int InstructionId { get; set; }
-        public Recipe Recipe { get; set; }
+        public int RecipeId { get; set; }
     }
 }

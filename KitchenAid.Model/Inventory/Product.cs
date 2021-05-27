@@ -14,7 +14,8 @@ namespace KitchenAid.Model.Inventory
         public double Quantity { get; set; }
 
         public string QuantityUnit { get; set; }
-
+        [Required]
+        [Range(1, double.MaxValue, ErrorMessage = "Price must be set to more than 1")]
         public double CurrentPrice { get; set; }
 
         public KindOfStorage StoredIn { get; set; }

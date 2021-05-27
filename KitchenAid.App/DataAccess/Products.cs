@@ -20,6 +20,13 @@ namespace KitchenAid.App.DataAccess
             return JsonConvert.DeserializeObject<Product[]>(json);
         }
 
+        public async Task<Product[]> GetStorageProductForProductsAsync(int id)
+        {
+            HttpResponseMessage result = await _httpClient.GetAsync(new Uri(baseUri, $"products/{id}/storageproduct"));
+            string json = await result.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<Product[]>(json);
+        }
+
 
         internal async Task<bool> AddProductAsync(Product product)
         {
@@ -59,9 +66,10 @@ namespace KitchenAid.App.DataAccess
             return false;
         }
 
+
         internal async Task<bool> DeleteProductAsync(Product product)
         {
-            HttpResponseMessage result = await _httpClient.DeleteAsync(new Uri(baseUri, $"categories/{product.ProductId}"));
+            HttpResponseMessage result = await _httpClient.DeleteAsync(new Uri(baseUri, $"products/{product.ProductId}"));
             return result.IsSuccessStatusCode;
         }
     }

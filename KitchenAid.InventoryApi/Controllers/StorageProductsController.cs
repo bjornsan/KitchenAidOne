@@ -30,6 +30,7 @@ namespace KitchenAid.InventoryApi.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<StorageProduct>> GetStorageProduct(int id)
         {
+
             var storageProduct = await _context.StorageProducts.FindAsync(id);
 
             if (storageProduct == null)
@@ -39,6 +40,7 @@ namespace KitchenAid.InventoryApi.Controllers
 
             return storageProduct;
         }
+
 
         // PUT: api/StorageProducts/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for

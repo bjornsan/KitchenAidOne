@@ -15,11 +15,10 @@
                     <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
                         <Button x:Name="addProductBtn" Content="Add Product" Click="AddProductBtn_Click" />
                         <Button x:Name="addToInventoryBtn" Content="Add To Inventory" Click="AddToInventoryBtn_Click" />
-                        <Button x:Name="updateProduct" Content="Update product" Click="UpdateProduct_Click"  />
                     </StackPanel>
                 </ListView>
 
-                <ListView x:Name="lvStorages" ItemsSource="{x:Bind ShoppingListViewModel.ShoppingLists}" RelativePanel.Below="lvAddProduct" Margin="0, 20, 0, 0" SelectedItem="{x:Bind ShoppingListViewModel.SelectedShoppingList, Mode=TwoWay}" Visibility="Collapsed">
+                <ListView x:Name="lvStorages" ItemsSource="{x:Bind ShoppingListViewModel.ShoppingLists}" RelativePanel.Below="lvAddProduct" Margin="0, 20, 0, 0" SelectedItem="{x:Bind ShoppingListViewModel.SelectedShoppingList, Mode=OneWay}" Visibility="Collapsed">
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="model:Storage">
                             <StackPanel>
@@ -33,7 +32,7 @@
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="model:Product">
                             <StackPanel Orientation="Horizontal" Width="1000">
-                                <TextBlock Text="{x:Bind Name, Mode=TwoWay}" Width="200"/>
+                                <TextBlock Text="{x:Bind Name}" Width="200"/>
                                 <Rectangle VerticalAlignment="Stretch" Width="1" Margin="20, 0, 20, 0" Stroke="Black" />
                                 <TextBlock Text="{x:Bind Quantity}" Width="50"/>
                                 <Rectangle VerticalAlignment="Stretch" Width="1" Margin="20, 0, 20, 0" Stroke="Black" />
@@ -67,23 +66,5 @@
             </StackPanel>
         </ContentDialog>
 
-
-        <ContentDialog x:Name="UpdateProductsDialog"
-                                   PrimaryButtonText="Update"
-                                   SecondaryButtonText="Cancel"
-                                   PrimaryButtonClick="UpdateProductsDialog_PrimaryButtonClick" 
-                                   SecondaryButtonClick="UpdateProductsDialog_SecondaryButtonClick"
-                                   MaxWidth="800">
-
-            <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                <TextBlock x:Name="updateProductName" Text="{x:Bind ShoppingListViewModel.SelectedProduct.Name}" />
-                <TextBox x:Name="updateProductQuantity" Text="{x:Bind ShoppingListViewModel.SelectedProduct.Quantity}" />
-                <TextBox x:Name="updateProductQuantityUnit" Text="{x:Bind ShoppingListViewModel.SelectedProduct.QuantityUnit}" />
-                <TextBox x:Name="updateProductPrice" Text="{x:Bind ShoppingListViewModel.SelectedProduct.CurrentPrice}"/>
-                <!--<ComboBox x:Name="updateProductCategory" Header="Category:" ItemsSource="{x:Bind ShoppingListViewModel.Categories}" DisplayMemberPath="{x:Bind Name}" />
-                <ComboBox x:Name="updateProductStoredIn" Header="Kind of storage:" ItemsSource="{x:Bind ShoppingListViewModel.KindOfStorages}" />-->
-            </StackPanel>
-
-        </ContentDialog>
     </Grid>
 </Page>

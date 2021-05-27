@@ -11,8 +11,8 @@ namespace KitchenAid.Model.Recipes
         [JsonProperty("unit")]
         public string Unit { get; set; }
 
-        
+
         public int IngredientId { get; set; }
-        public Recipe Recipe { get; set; }
+        public int RecipeId { get; set; }
     }
 }
