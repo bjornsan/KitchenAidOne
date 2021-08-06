@@ -45,10 +45,10 @@ namespace KitchenAid.DataAccess
                 //DataSource = @"(localdb)\MSSQLLocalDB",
                 //InitialCatalog = "TESTING.Database",
                 //IntegratedSecurity = true
-                DataSource = @"Donau.hiof.no",
-                InitialCatalog = "bjornsan",
-                UserID = "bjornsan",
-                Password = "Fs;M}4hY"
+                DataSource = @"",
+                InitialCatalog = "",
+                UserID = "",
+                Password = ""
             };
 
             optionsBuilder.UseSqlServer(builder.ConnectionString.ToString());
